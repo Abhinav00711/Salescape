@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
-//import '../../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class SignInBar extends StatelessWidget {
   SignInBar({
@@ -19,7 +19,7 @@ class SignInBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final loginProvider = Provider.of<AuthProvider>(context);
+    final loginProvider = Provider.of<AuthProvider>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Row(
@@ -35,12 +35,11 @@ class SignInBar extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-              child: _LoadingIndicator(
-                  isLoading: false), //loginProvider.isLoading),
+              child: _LoadingIndicator(isLoading: loginProvider.isLoading),
             ),
           ),
           _RoundContinueButton(
-              onPressed: () {}), //loginProvider.isLoading ? () {} : onPressed),
+              onPressed: loginProvider.isLoading ? () {} : onPressed),
         ],
       ),
     );

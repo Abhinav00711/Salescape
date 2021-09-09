@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 import './decoration_functions.dart';
 import './sign_in_up_bar.dart';
 import './title.dart';
-//import '../../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({
@@ -128,55 +128,52 @@ class _SignUpState extends State<SignUp> {
                       FocusScope.of(context).unfocus();
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        // await Provider.of<AuthProvider>(context, listen: false)
-                        //     .register(_email, _password)
-                        //     .then(
-                        //   (value) {
-                        //     String? errorMessage = value;
-                        //     if (errorMessage != null) {
-                        //       SnackBar snackBar = SnackBar(
-                        //         content: Container(
-                        //           child: ListTile(
-                        //             title: Text(errorMessage),
-                        //             leading: Icon(Icons.error),
-                        //           ),
-                        //         ),
-                        //         backgroundColor: Colors.amberAccent,
-                        //         padding: EdgeInsets.symmetric(
-                        //             horizontal: 10, vertical: 5),
-                        //         duration: Duration(seconds: 2),
-                        //       );
-                        //       ScaffoldMessenger.of(context)
-                        //           .showSnackBar(snackBar);
-                        //     }
-                        //   },
-                        // );
+                        await Provider.of<AuthProvider>(context, listen: false)
+                            .register(_email, _password)
+                            .then(
+                          (value) {
+                            String? errorMessage = value;
+                            if (errorMessage != null) {
+                              SnackBar snackBar = SnackBar(
+                                content: Container(
+                                  child: ListTile(
+                                    title: Text(errorMessage),
+                                    leading: Icon(Icons.error),
+                                  ),
+                                ),
+                                backgroundColor: Colors.amberAccent,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                duration: Duration(seconds: 2),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
+                          },
+                        );
                       }
                     },
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child:
-                        // Consumer<AuthProvider>(
-                        //   builder: (_, authProvider, __) =>
-                        InkWell(
-                      splashColor: Colors.white,
-                      onTap: () {
-                        widget.onSignInPressed.call();
-                        // if (!authProvider.isLoading) {
-                        //   widget.onSignInPressed.call();
-                        // }
-                      },
-                      child: const Text(
-                        'Sign in',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          fontSize: 16,
+                    child: Consumer<AuthProvider>(
+                      builder: (_, authProvider, __) => InkWell(
+                        splashColor: Colors.white,
+                        onTap: () {
+                          if (!authProvider.isLoading) {
+                            widget.onSignInPressed.call();
+                          }
+                        },
+                        child: const Text(
+                          'Sign in',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
-                    //),
                   ),
                 ],
               ),

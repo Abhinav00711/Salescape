@@ -5,11 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
+import './widgets/wrapper.dart';
 import './widgets/my_material_app.dart';
-import './screens/login_screen.dart';
 import './screens/error_screen.dart';
 import './screens/loading_screen.dart';
+import './providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,14 +40,12 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasError) {
           return MyMaterialApp(ErrorScreen());
         } else if (snapshot.hasData) {
-          // return MultiProvider(
-          //   providers: [
-          //     ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider()),
-          //     ChangeNotifierProvider<CartProvider>.value(value: CartProvider()),
-          //   ],
-          //   child: MyMaterialApp(Wrapper()),
-          // );
-          return MyMaterialApp(LoginScreen());
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider()),
+            ],
+            child: MyMaterialApp(Wrapper()),
+          );
         } else {
           return MyMaterialApp(LoadingScreen());
         }
