@@ -1,4 +1,4 @@
-package com.example.wholesaler
+package com.salescape.wholesaler
 
 import io.flutter.embedding.android.FlutterActivity
 

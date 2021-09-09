@@ -1,4 +1,4 @@
-package com.example.delivery
+package com.salescape.delivery
 
 import io.flutter.embedding.android.FlutterActivity
 

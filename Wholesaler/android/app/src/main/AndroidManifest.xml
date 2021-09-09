@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wholesaler">
+    package="com.salescape.wholesaler">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="wholesaler"
         android:icon="@mipmap/ic_launcher">
