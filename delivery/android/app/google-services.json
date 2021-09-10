@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "717627720000-7ejg79rbl3oa2r1b1t9e50c9imm9jvm2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.salescape.delivery",
+            "certificate_hash": "8a0c16c707f61476e8256b7585e6194b855157e1"
+          }
+        },
+        {
           "client_id": "717627720000-5aa6pfdtoa2vmegtr2k94tucu69fhdu9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -50,6 +58,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "717627720000-3uusc6i0hug6sv5c36t9lhjujqds532m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.salescape.retailer",
+            "certificate_hash": "8a0c16c707f61476e8256b7585e6194b855157e1"
+          }
+        },
         {
           "client_id": "717627720000-657f31h5nvvcu3fndrrulbps9mmnsurj.apps.googleusercontent.com",
           "client_type": 1,
@@ -87,6 +103,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "717627720000-66j3opdpg8j36usllvic6l7j4qrqjk6u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.salescape.wholesaler",
+            "certificate_hash": "8a0c16c707f61476e8256b7585e6194b855157e1"
+          }
+        },
         {
           "client_id": "717627720000-vh7ssdk48g0vjd75oo33a08rn5ddfu8s.apps.googleusercontent.com",
           "client_type": 1,
