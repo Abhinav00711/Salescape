@@ -18,8 +18,8 @@ class RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     String _name = '';
     String _phone = '';
-    String _address = '';
-    String _bname = '';
+    String _state = '';
+    String _email = '';
 
     return Form(
       key: _formKey,
@@ -95,7 +95,7 @@ class RegisterForm extends StatelessWidget {
                   color: Colors.white,
                 ),
                 decoration: registerInputDecoration(
-                  hintText: 'Business Name',
+                  hintText: 'State',
                   icon: FontAwesomeIcons.briefcase,
                 ),
                 keyboardType: TextInputType.name,
@@ -104,7 +104,7 @@ class RegisterForm extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value!.trim().isEmpty) {
-                    return 'Please enter your business name.';
+                    return 'Please enter your state.';
                   } else if (!RegExp('[a-zA-Z]').hasMatch(value.trim())) {
                     return 'Invalid name';
                   } else {
@@ -112,7 +112,7 @@ class RegisterForm extends StatelessWidget {
                   }
                 },
                 onSaved: (newValue) {
-                  _bname = newValue!.trim();
+                  _state = newValue!.trim();
                 },
               ),
             ),
@@ -124,7 +124,7 @@ class RegisterForm extends StatelessWidget {
                   color: Colors.white,
                 ),
                 decoration: registerInputDecoration(
-                  hintText: 'Address',
+                  hintText: 'Email',
                   icon: FontAwesomeIcons.addressBook,
                 ),
                 keyboardType: TextInputType.streetAddress,
@@ -133,13 +133,15 @@ class RegisterForm extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value!.trim().isEmpty) {
-                    return 'Please enter your address.';
+                    return 'Please enter your email.';
+                  } else if (!value.trim().contains('@')) {
+                    return 'Invalid Email';
                   } else {
                     return null;
                   }
                 },
                 onSaved: (newValue) {
-                  _address = newValue!.trim();
+                  _email = newValue!.trim();
                 },
               ),
             ),
@@ -161,8 +163,8 @@ class RegisterForm extends StatelessWidget {
                         did: uid,
                         name: _name,
                         phone: _phone,
-                        state: _address,
-                        email: _bname,
+                        state: _state,
+                        email: _email,
                         status: 'NA',
                       );
                       await FirestoreService().addUser(userData);

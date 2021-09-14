@@ -18,8 +18,9 @@ class RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     String _name = '';
     String _phone = '';
-    String _address = '';
-    String _bname = '';
+    String _email = '';
+    String _state = '';
+    String _industry = '';
 
     return Form(
       key: _formKey,
@@ -95,7 +96,7 @@ class RegisterForm extends StatelessWidget {
                   color: Colors.white,
                 ),
                 decoration: registerInputDecoration(
-                  hintText: 'Business Name',
+                  hintText: 'State',
                   icon: FontAwesomeIcons.briefcase,
                 ),
                 keyboardType: TextInputType.name,
@@ -104,7 +105,7 @@ class RegisterForm extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value!.trim().isEmpty) {
-                    return 'Please enter your business name.';
+                    return 'Please enter your state.';
                   } else if (!RegExp('[a-zA-Z]').hasMatch(value.trim())) {
                     return 'Invalid name';
                   } else {
@@ -112,7 +113,7 @@ class RegisterForm extends StatelessWidget {
                   }
                 },
                 onSaved: (newValue) {
-                  _bname = newValue!.trim();
+                  _state = newValue!.trim();
                 },
               ),
             ),
@@ -124,7 +125,7 @@ class RegisterForm extends StatelessWidget {
                   color: Colors.white,
                 ),
                 decoration: registerInputDecoration(
-                  hintText: 'Address',
+                  hintText: 'Email',
                   icon: FontAwesomeIcons.addressBook,
                 ),
                 keyboardType: TextInputType.streetAddress,
@@ -133,13 +134,44 @@ class RegisterForm extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value!.trim().isEmpty) {
-                    return 'Please enter your address.';
+                    return 'Please enter your email.';
+                  } else if (!value.trim().contains('@')) {
+                    return 'Invalid Email';
                   } else {
                     return null;
                   }
                 },
                 onSaved: (newValue) {
-                  _address = newValue!.trim();
+                  _email = newValue!.trim();
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextFormField(
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+                decoration: registerInputDecoration(
+                  hintText: 'Industry',
+                  icon: FontAwesomeIcons.briefcase,
+                ),
+                keyboardType: TextInputType.name,
+                autocorrect: false,
+                cursorColor: Colors.white,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.trim().isEmpty) {
+                    return 'Please enter your industry.';
+                  } else if (!RegExp('[a-zA-Z]').hasMatch(value.trim())) {
+                    return 'Invalid industry';
+                  } else {
+                    return null;
+                  }
+                },
+                onSaved: (newValue) {
+                  _industry = newValue!.trim();
                 },
               ),
             ),
@@ -161,9 +193,9 @@ class RegisterForm extends StatelessWidget {
                         wid: uid,
                         name: _name,
                         phone: _phone,
-                        state: _address,
-                        email: _bname,
-                        industry: 'NA',
+                        state: _state,
+                        email: _email,
+                        industry: _industry,
                       );
                       await FirestoreService().addUser(userData);
                       ScaffoldMessenger.of(context).showSnackBar(
