@@ -30,16 +30,6 @@ class ErrorScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Container(
-              //   padding: const EdgeInsets.only(top: 16),
-              //   child: const Text(
-              //     'Error message',
-              //     textAlign: TextAlign.center,
-              //     style: TextStyle(
-              //       fontSize: 16,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
