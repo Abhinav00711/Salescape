@@ -96,7 +96,7 @@ class RegisterForm extends StatelessWidget {
                 ),
                 decoration: registerInputDecoration(
                   hintText: 'State',
-                  icon: FontAwesomeIcons.briefcase,
+                  icon: FontAwesomeIcons.mapMarker,
                 ),
                 keyboardType: TextInputType.name,
                 autocorrect: false,
@@ -125,7 +125,7 @@ class RegisterForm extends StatelessWidget {
                 ),
                 decoration: registerInputDecoration(
                   hintText: 'Email',
-                  icon: FontAwesomeIcons.addressBook,
+                  icon: Icons.mail,
                 ),
                 keyboardType: TextInputType.streetAddress,
                 autocorrect: false,

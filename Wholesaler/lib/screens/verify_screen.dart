@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
-import '../widgets/VerifyScreen/curve_painter.dart';
+import '../utils/curve_painter.dart';
 import '../widgets/VerifyScreen/verify.dart';
 import '../widgets/VerifyScreen/register_option.dart';
 import '../widgets/VerifyScreen/register_form.dart';

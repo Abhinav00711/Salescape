@@ -26,4 +26,14 @@ class FirestoreService {
             );
     return (await _userRef.doc(wid).get()).data();
   }
+
+  Future<void> updateUser(Wholesaler userData) async {
+    var _userRef =
+        _firestore.collection('wholesalers').withConverter<Wholesaler>(
+              fromFirestore: (snapshots, _) =>
+                  Wholesaler.fromJson(snapshots.data()!),
+              toFirestore: (user, _) => user.toJson(),
+            );
+    await _userRef.doc(userData.wid).set(userData);
+  }
 }
