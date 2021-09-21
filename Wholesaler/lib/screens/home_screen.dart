@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import './product_screen.dart';
 import './profile_screen.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/HomeScreen/home_button.dart';
@@ -156,7 +157,13 @@ class HomeScreen extends StatelessWidget {
                           HomeButton(
                             image: 'assets/images/product.png',
                             title: 'PRODUCTS',
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProductScreen()),
+                              );
+                            },
                           ),
                         ],
                       ),

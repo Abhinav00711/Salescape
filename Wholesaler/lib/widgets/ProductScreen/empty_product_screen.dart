@@ -25,11 +25,16 @@ class EmptyProductScreen extends StatelessWidget {
           body: Column(
             children: <Widget>[
               Container(
+                width: double.infinity,
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top,
-                    left: 16,
-                    right: 16),
-                child: Image.asset('assets/images/'),
+                  top: MediaQuery.of(context).padding.top,
+                  left: 16,
+                  right: 16,
+                ),
+                child: Image.asset(
+                  'assets/images/noData.png',
+                  fit: BoxFit.cover,
+                ),
               ),
               Container(
                 padding: const EdgeInsets.only(top: 8),
