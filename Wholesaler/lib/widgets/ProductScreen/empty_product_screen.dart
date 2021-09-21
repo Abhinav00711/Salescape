@@ -36,16 +36,18 @@ class EmptyProductScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
+              SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  'No Products to see.',
+                  'No Products to see',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
+              SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {},
                 child: Text('Add Product'),
