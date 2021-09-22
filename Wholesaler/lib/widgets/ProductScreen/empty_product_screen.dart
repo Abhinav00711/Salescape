@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './add_product_form.dart';
+
 class EmptyProductScreen extends StatelessWidget {
   const EmptyProductScreen({Key? key}) : super(key: key);
 
@@ -49,7 +51,12 @@ class EmptyProductScreen extends StatelessWidget {
               ),
               SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddProduct()),
+                  );
+                },
                 child: Text('Add Product'),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.amber,

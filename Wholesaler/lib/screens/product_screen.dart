@@ -17,6 +17,7 @@ class ProductScreen extends StatelessWidget {
       future: FirestoreService().getAllProducts(Global.userData!.wid),
       builder: (context, productData) {
         if (productData.hasError) {
+          print("Product Error : " + productData.error.toString());
           return ErrorScreen();
         } else if (productData.hasData) {
           if (productData.data!.isEmpty) {

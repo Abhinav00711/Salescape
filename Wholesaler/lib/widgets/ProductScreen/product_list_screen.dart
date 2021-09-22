@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wholesaler/widgets/ProductScreen/product_card.dart';
 
+import './add_product_form.dart';
+import './product_card.dart';
 import '../../models/product.dart';
 
 class ProductListScreen extends StatelessWidget {
@@ -37,6 +38,16 @@ class ProductListScreen extends StatelessWidget {
             return ProductCard(product: productList[index]);
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProduct()),
+          );
+        },
+        backgroundColor: Colors.amber,
       ),
     );
   }

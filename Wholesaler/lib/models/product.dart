@@ -5,7 +5,7 @@ class Product {
   final String description;
   final double price;
   final int stock;
-  final String image;
+  final String imageUrl;
 
   Product({
     required this.pid,
@@ -14,7 +14,7 @@ class Product {
     required this.description,
     required this.price,
     required this.stock,
-    required this.image,
+    required this.imageUrl,
   });
 
   factory Product.fromJson(Map<String, Object?> json) {
@@ -23,9 +23,9 @@ class Product {
       wid: json['wid'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
-      price: json['price'] as double,
+      price: double.parse(json['price'].toString()),
       stock: json['stock'] as int,
-      image: json['image'] as String,
+      imageUrl: json['imageUrl'] as String,
     );
   }
 
@@ -37,7 +37,7 @@ class Product {
       'description': description,
       'price': price,
       'stock': stock,
-      'image': image,
+      'imageUrl': imageUrl,
     };
   }
 }
