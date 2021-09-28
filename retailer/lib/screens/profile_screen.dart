@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:retailer/services/firestore_service.dart';
+import 'package:retailer/utils/curve_painter.dart';
+import 'package:retailer/widgets/LoginScreen/decoration_functions.dart';
+import 'package:retailer/widgets/ProfileScreen/profile_button.dart';
+import 'package:retailer/widgets/ProfileScreen/profile_form.dart';
 
 import '../data/global.dart';
-import '../models/wholesaler.dart';
-import '../services/firestore_service.dart';
-import '../utils/curve_painter.dart';
-import '../widgets/LoginScreen/decoration_functions.dart';
-import '../widgets/ProfileScreen/profile_form.dart';
-import '../widgets/ProfileScreen/profile_button.dart';
+import '../models/retailer.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -28,13 +28,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String _phone = '';
     String _email = '';
     String _state = '';
-    String _industry = '';
 
-    Wholesaler user = Global.userData!;
+    Retailer user = Global.userData!;
 
-    return Scaffold(
-      backgroundColor: const Color(0xff092E34),
-      body: SingleChildScrollView(
+    return Container(
+      color: const Color(0xff092E34),
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -133,6 +132,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       initialValue: user.phone,
                                       keyboardType: TextInputType.phone,
+                                      maxLength: 2,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.enforced,
                                       autocorrect: false,
                                       cursorColor: Colors.white,
                                       autovalidateMode:
@@ -218,38 +220,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       },
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: TextFormField(
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                      ),
-                                      decoration: registerInputDecoration(
-                                        hintText: 'Industry',
-                                        icon: FontAwesomeIcons.industry,
-                                      ),
-                                      initialValue: user.industry,
-                                      keyboardType: TextInputType.name,
-                                      autocorrect: false,
-                                      cursorColor: Colors.white,
-                                      autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
-                                      validator: (value) {
-                                        if (value!.trim().isEmpty) {
-                                          return 'Please enter your industry.';
-                                        } else if (!RegExp('[a-zA-Z]')
-                                            .hasMatch(value.trim())) {
-                                          return 'Invalid industry';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      onSaved: (newValue) {
-                                        _industry = newValue!.trim();
-                                      },
-                                    ),
-                                  ),
                                 ],
                               ),
                             )
@@ -270,13 +240,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           .validate()) {
                                         ProfileScreen._formKey.currentState!
                                             .save();
-                                        Wholesaler userData = Wholesaler(
-                                          wid: user.wid,
+                                        Retailer userData = Retailer(
+                                          rid: user.rid,
                                           name: _name,
                                           phone: _phone,
                                           state: _state,
                                           email: _email,
-                                          industry: _industry,
                                         );
                                         await FirestoreService()
                                             .updateUser(userData)

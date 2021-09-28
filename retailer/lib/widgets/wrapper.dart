@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/login_screen.dart';
-import '../screens/home_screen.dart';
+import '../screens/tabs_screen.dart';
 import '../screens/verify_screen.dart';
 import '../screens/error_screen.dart';
 import '../screens/loading_screen.dart';
@@ -39,7 +39,7 @@ class Wrapper extends StatelessWidget {
                         return ErrorScreen();
                       } else if (userData.hasData) {
                         Global.userData = userData.data;
-                        return HomeScreen();
+                        return TabsScreen();
                       } else {
                         return LoadingScreen();
                       }
