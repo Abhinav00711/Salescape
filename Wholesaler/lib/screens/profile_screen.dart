@@ -39,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Wholesaler user = Global.userData!;
 
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: const Color(0xff092E34),
       body: SingleChildScrollView(
         child: Column(
