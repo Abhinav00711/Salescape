@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:wholesaler/services/firestore_service.dart';
+import 'package:wholesaler/widgets/ProductScreen/edit_product_form.dart';
 
 import '../../screens/product_detail_screen.dart';
 import '../../models/product.dart';
@@ -84,7 +83,12 @@ class ProductCard extends StatelessWidget {
                         icon: Icon(Icons.edit),
                         color: Colors.blueGrey,
                         onPressed: () {
-                          log("Edit");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditProduct(product: product)),
+                          );
                         }),
                     SizedBox(height: 2),
                     IconButton(
