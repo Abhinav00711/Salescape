@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:wholesaler/services/firestore_service.dart';
 
 import '../../screens/product_detail_screen.dart';
 import '../../models/product.dart';
@@ -75,7 +78,22 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
+                    SizedBox(height: 10),
+                    IconButton(
+                        icon: Icon(Icons.edit),
+                        color: Colors.blueGrey,
+                        onPressed: () {
+                          log("Edit");
+                        }),
+                    SizedBox(height: 2),
+                    IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.red,
+                        onPressed: () {
+                          FirestoreService()
+                              .deleteProduct(product, product.pid);
+                        }),
                   ],
                 ),
               ),

@@ -63,4 +63,16 @@ class FirestoreService {
     }
     return productList;
   }
+
+  Future<void> deleteProduct(Product product, String pid) async {
+    var _productRef = _firestore.collection('products').withConverter<Product>(
+          fromFirestore: (snapshots, _) => Product.fromJson(snapshots.data()!),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    return _productRef
+        .doc(pid)
+        .delete()
+        .then((value) => print("User Deleted"))
+        .catchError((error) => print("Failed to delete user: $error"));
+  }
 }
