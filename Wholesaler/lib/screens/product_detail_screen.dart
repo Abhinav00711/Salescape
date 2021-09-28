@@ -68,19 +68,6 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Card(
-
-                  //   color: Theme.of(context).accentColor,
-                  //   margin: EdgeInsets.all(15.0),
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     child: Text('₹ ${product.price.toString()}'),
-                  //   ),
-
-                  // ),
                 ],
               ),
             ),
@@ -115,28 +102,6 @@ class ProductDetailScreen extends StatelessWidget {
                 ],
               ),
             )
-            // Card(
-            //   color: Theme.of(context).accentColor,
-            //   margin: EdgeInsets.all(15.0),
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(10.0),
-            //     child: Text('Price: ₹ ${product.price.toString()}'),
-            //   ),
-            // ),
-            // Card(
-            //   color: Theme.of(context).accentColor,
-            //   margin: EdgeInsets.all(15.0),
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(10.0),
-            //     child: Text(' Stock : ${product.stock}'),
-            //   ),
-            // ),
           ])
         ],
       ),
