@@ -424,6 +424,7 @@ class _AddProductState extends State<AddProduct> {
                             Product product = Product(
                               pid: tempPid,
                               wid: Global.userData!.wid,
+                              wname: Global.userData!.name,
                               name: _name,
                               description: _desc,
                               price: double.parse(_price),

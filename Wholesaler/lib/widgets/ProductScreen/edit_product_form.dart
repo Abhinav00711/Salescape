@@ -451,6 +451,7 @@ class _EditProductState extends State<EditProduct> {
                               Product product1 = Product(
                                 pid: product.pid,
                                 wid: Global.userData!.wid,
+                                wname: Global.userData!.name,
                                 name: _name,
                                 description: _desc,
                                 price: double.parse(_price),

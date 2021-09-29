@@ -1,6 +1,7 @@
 class Product {
   final String pid;
   final String wid;
+  final String wname;
   final String name;
   final String description;
   final double price;
@@ -10,6 +11,7 @@ class Product {
   Product({
     required this.pid,
     required this.wid,
+    required this.wname,
     required this.name,
     required this.description,
     required this.price,
@@ -21,6 +23,7 @@ class Product {
     return Product(
       pid: json['pid'] as String,
       wid: json['wid'] as String,
+      wname: json['wname'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       price: double.parse(json['price'].toString()),
@@ -33,6 +36,7 @@ class Product {
     return {
       'pid': pid,
       'wid': wid,
+      'wname': wname,
       'name': name,
       'description': description,
       'price': price,
