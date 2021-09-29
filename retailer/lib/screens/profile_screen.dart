@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:retailer/providers/auth_provider.dart';
 import 'package:retailer/services/firestore_service.dart';
 import 'package:retailer/utils/curve_painter.dart';
 import 'package:retailer/widgets/LoginScreen/decoration_functions.dart';
@@ -267,13 +269,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ],
                               )
-                            : ProfileButton(
-                                text: ' EDIT ',
-                                onPressed: () {
-                                  setState(() {
-                                    _isEditable = true;
-                                  });
-                                },
+                            : Row(
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  ProfileButton(
+                                    text: ' EDIT ',
+                                    onPressed: () {
+                                      setState(() {
+                                        _isEditable = true;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  ProfileButton(
+                                    text: ' LOGOUT ',
+                                    onPressed: () async {
+                                      Global.userData = null;
+                                      await Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .logout();
+                                    },
+                                  ),
+                                ],
                               ),
                       ),
                     ],
