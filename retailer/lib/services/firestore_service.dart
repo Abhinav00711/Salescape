@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:retailer/models/order.dart';
 
+import '../models/order.dart';
+import '../models/product.dart';
 import '../models/retailer.dart';
 
 class FirestoreService {
@@ -32,7 +33,7 @@ class FirestoreService {
     await _userRef.doc(userData.rid).set(userData);
   }
 
-  // Orders
+  // Order Services
 
   Future<List<Order>> getAllUserOrders(String rid) async {
     var _orderRef = _firestore.collection('orders').withConverter<Order>(
@@ -81,5 +82,39 @@ class FirestoreService {
       }
     }
     return completedList;
+  }
+
+  //Product Services
+
+  Future<List<Product>> getAllProducts() async {
+    var _productRef = _firestore.collection('products').withConverter<Product>(
+          fromFirestore: (snapshots, _) => Product.fromJson(snapshots.data()!),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    List<Product> productList = [];
+    List<QueryDocumentSnapshot<Product>> products =
+        await _productRef.get().then((products) => products.docs);
+    for (var product in products) {
+      productList.add(product.data());
+    }
+    return productList;
+  }
+
+  Future<List<Product>> getAllProductsByQuery(String query) async {
+    var _productRef = _firestore.collection('products').withConverter<Product>(
+          fromFirestore: (snapshots, _) => Product.fromJson(snapshots.data()!),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    List<Product> productList = [];
+    List<QueryDocumentSnapshot<Product>> products =
+        await _productRef.get().then((products) => products.docs);
+    for (var product in products) {
+      var p = product.data();
+      if (p.name.toLowerCase().contains(query.toLowerCase()) ||
+          p.wname.toLowerCase().contains(query.toLowerCase())) {
+        productList.add(p);
+      }
+    }
+    return productList;
   }
 }

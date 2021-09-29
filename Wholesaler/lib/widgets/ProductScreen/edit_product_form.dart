@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -23,15 +22,10 @@ class EditProduct extends StatefulWidget {
   static final _formKey = new GlobalKey<FormState>();
 
   @override
-  _EditProductState createState() => _EditProductState(product: product);
+  _EditProductState createState() => _EditProductState();
 }
 
 class _EditProductState extends State<EditProduct> {
-  final Product product;
-  _EditProductState({
-    Key? key,
-    required this.product,
-  });
   UploadTask? task;
   File? image;
   bool _imgChange = false;
@@ -94,7 +88,7 @@ class _EditProductState extends State<EditProduct> {
                       ),
                       child: image == null
                           ? new Image.network(
-                              product.imageUrl,
+                              widget.product.imageUrl,
                               fit: BoxFit.cover,
                             )
                           : Image.file(
@@ -157,7 +151,7 @@ class _EditProductState extends State<EditProduct> {
                         ),
                       ),
                       TextFormField(
-                        initialValue: product.name,
+                        initialValue: widget.product.name,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           contentPadding:
@@ -226,7 +220,7 @@ class _EditProductState extends State<EditProduct> {
                         ),
                       ),
                       TextFormField(
-                        initialValue: product.price.toString(),
+                        initialValue: widget.product.price.toString(),
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           contentPadding:
@@ -297,7 +291,7 @@ class _EditProductState extends State<EditProduct> {
                         ),
                       ),
                       TextFormField(
-                        initialValue: product.stock.toString(),
+                        initialValue: widget.product.stock.toString(),
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           contentPadding:
@@ -366,7 +360,7 @@ class _EditProductState extends State<EditProduct> {
                         ),
                       ),
                       TextFormField(
-                        initialValue: product.description,
+                        initialValue: widget.product.description,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           contentPadding:
@@ -437,19 +431,21 @@ class _EditProductState extends State<EditProduct> {
                           onPressed: () async {
                             if (EditProduct._formKey.currentState!.validate()) {
                               EditProduct._formKey.currentState!.save();
-                              String url = product.imageUrl;
+                              String url = widget.product.imageUrl;
                               if (_imgChange == true) {
                                 task = FirebaseStorageService.uploadImage(
-                                    Global.userData!.wid, product.pid, image!);
+                                    Global.userData!.wid,
+                                    widget.product.pid,
+                                    image!);
                                 final snapshot =
                                     await task!.whenComplete(() {});
                                 url = await snapshot.ref.getDownloadURL();
                               } else {
-                                url = product.imageUrl;
+                                url = widget.product.imageUrl;
                               }
 
                               Product product1 = Product(
-                                pid: product.pid,
+                                pid: widget.product.pid,
                                 wid: Global.userData!.wid,
                                 wname: Global.userData!.name,
                                 name: _name,
