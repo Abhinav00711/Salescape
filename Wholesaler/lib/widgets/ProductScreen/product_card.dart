@@ -78,7 +78,6 @@ class ProductCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
                     IconButton(
                         icon: Icon(Icons.edit),
                         color: Colors.blueGrey,
@@ -90,7 +89,6 @@ class ProductCard extends StatelessWidget {
                                     EditProduct(product: product)),
                           );
                         }),
-                    SizedBox(height: 2),
                     IconButton(
                         icon: Icon(Icons.delete),
                         color: Colors.red,

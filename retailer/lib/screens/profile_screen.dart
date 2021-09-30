@@ -270,10 +270,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               )
                             : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
                                   ProfileButton(
                                     text: ' EDIT ',
                                     onPressed: () {
@@ -281,9 +280,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         _isEditable = true;
                                       });
                                     },
-                                  ),
-                                  SizedBox(
-                                    width: 20,
                                   ),
                                   ProfileButton(
                                     text: ' LOGOUT ',
