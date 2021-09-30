@@ -8,6 +8,7 @@ class Product {
   final String description;
   final double price;
   final int stock;
+  final String unit;
   final String imageUrl;
 
   Product({
@@ -20,6 +21,7 @@ class Product {
     required this.description,
     required this.price,
     required this.stock,
+    required this.unit,
     required this.imageUrl,
   });
 
@@ -34,6 +36,7 @@ class Product {
       description: json['description'] as String,
       price: double.parse(json['price'].toString()),
       stock: json['stock'] as int,
+      unit: json['unit'] as String,
       imageUrl: json['imageUrl'] as String,
     );
   }
@@ -49,6 +52,7 @@ class Product {
       'description': description,
       'price': price,
       'stock': stock,
+      'unit': unit,
       'imageUrl': imageUrl,
     };
   }

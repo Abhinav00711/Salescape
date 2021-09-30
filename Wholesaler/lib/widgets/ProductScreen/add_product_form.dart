@@ -42,6 +42,7 @@ class _AddProductState extends State<AddProduct> {
     String _name = '';
     String _price = '';
     String _stock = '';
+    String _unit = '';
     String _desc = '';
 
     return Scaffold(
@@ -338,6 +339,74 @@ class _AddProductState extends State<AddProduct> {
                     children: [
                       Container(
                         child: Text(
+                          'Unit',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      TextFormField(
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 18.0),
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            errorBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: const Color(0xffFFA62B)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            focusedErrorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2.0, color: const Color(0xffFFA62B)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            errorStyle: const TextStyle(color: Colors.amber),
+                            hintText: '(Eg:Pcs/Kg)'),
+                        keyboardType: TextInputType.name,
+                        autocorrect: false,
+                        cursorColor: Colors.black,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return 'Please enter product unit.';
+                          } else if (!RegExp('[a-zA-Z]')
+                              .hasMatch(value.trim())) {
+                            return 'Invalid product unit';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onSaved: (newValue) {
+                          _unit = newValue!.trim();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Text(
                           'Description',
                           style: TextStyle(
                             color: Colors.white,
@@ -431,6 +500,7 @@ class _AddProductState extends State<AddProduct> {
                               description: _desc,
                               price: double.parse(_price),
                               stock: int.parse(_stock),
+                              unit: _unit,
                               imageUrl: url,
                             );
                             await FirestoreService().addProduct(product);
