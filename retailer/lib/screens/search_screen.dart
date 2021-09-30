@@ -59,7 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
             SearchBar(
               text: query,
               onChanged: searchProduct,
-              hintText: 'Product or Wholesaler Name',
+              hintText: 'Product or Business Name',
             ),
             Expanded(
               child: ListView.builder(

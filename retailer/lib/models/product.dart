@@ -2,6 +2,8 @@ class Product {
   final String pid;
   final String wid;
   final String wname;
+  final String bname;
+  final String industry;
   final String name;
   final String description;
   final double price;
@@ -12,6 +14,8 @@ class Product {
     required this.pid,
     required this.wid,
     required this.wname,
+    required this.bname,
+    required this.industry,
     required this.name,
     required this.description,
     required this.price,
@@ -24,6 +28,8 @@ class Product {
       pid: json['pid'] as String,
       wid: json['wid'] as String,
       wname: json['wname'] as String,
+      bname: json['bname'] as String,
+      industry: json['industry'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       price: double.parse(json['price'].toString()),
@@ -37,6 +43,8 @@ class Product {
       'pid': pid,
       'wid': wid,
       'wname': wname,
+      'bname': bname,
+      'industry': industry,
       'name': name,
       'description': description,
       'price': price,

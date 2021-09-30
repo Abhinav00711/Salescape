@@ -111,7 +111,7 @@ class FirestoreService {
     for (var product in products) {
       var p = product.data();
       if (p.name.toLowerCase().contains(query.toLowerCase()) ||
-          p.wname.toLowerCase().contains(query.toLowerCase())) {
+          p.bname.toLowerCase().contains(query.toLowerCase())) {
         productList.add(p);
       }
     }

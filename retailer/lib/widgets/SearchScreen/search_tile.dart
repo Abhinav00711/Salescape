@@ -25,7 +25,7 @@ class SearchTile extends StatelessWidget {
             height: 50,
           ),
           title: Text(product.name),
-          subtitle: Text(product.wname),
+          subtitle: Text(product.bname),
           trailing: Text('₹${product.price}'),
         ),
       ),
