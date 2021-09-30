@@ -25,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     String _name = '';
+    String _bname = '';
     String _phone = '';
     String _email = '';
     String _state = '';
@@ -117,6 +118,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       },
                                       onSaved: (newValue) {
                                         _name = newValue!.trim();
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: TextFormField(
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                      decoration: registerInputDecoration(
+                                        hintText: 'Business Name',
+                                        icon: FontAwesomeIcons.briefcase,
+                                      ),
+                                      initialValue: user.bname,
+                                      keyboardType: TextInputType.name,
+                                      autocorrect: false,
+                                      cursorColor: Colors.white,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return 'Please enter your business name.';
+                                        } else if (!RegExp('[a-zA-Z0-9]')
+                                            .hasMatch(value.trim())) {
+                                          return 'Invalid business name';
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                      onSaved: (newValue) {
+                                        _bname = newValue!.trim();
                                       },
                                     ),
                                   ),
@@ -273,6 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Wholesaler userData = Wholesaler(
                                           wid: user.wid,
                                           name: _name,
+                                          bname: _bname,
                                           phone: _phone,
                                           state: _state,
                                           email: _email,

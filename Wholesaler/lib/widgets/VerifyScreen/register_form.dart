@@ -17,6 +17,7 @@ class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _name = '';
+    String _bname = '';
     String _phone = '';
     String _email = '';
     String _state = '';
@@ -55,6 +56,35 @@ class RegisterForm extends StatelessWidget {
                 },
                 onSaved: (newValue) {
                   _name = newValue!.trim();
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextFormField(
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+                decoration: registerInputDecoration(
+                  hintText: 'Business Name',
+                  icon: FontAwesomeIcons.briefcase,
+                ),
+                keyboardType: TextInputType.name,
+                autocorrect: false,
+                cursorColor: Colors.white,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.trim().isEmpty) {
+                    return 'Please enter your business name.';
+                  } else if (!RegExp('[a-zA-Z0-9]').hasMatch(value.trim())) {
+                    return 'Invalid business name';
+                  } else {
+                    return null;
+                  }
+                },
+                onSaved: (newValue) {
+                  _bname = newValue!.trim();
                 },
               ),
             ),
@@ -192,6 +222,7 @@ class RegisterForm extends StatelessWidget {
                       Wholesaler userData = Wholesaler(
                         wid: uid,
                         name: _name,
+                        bname: _bname,
                         phone: _phone,
                         state: _state,
                         email: _email,

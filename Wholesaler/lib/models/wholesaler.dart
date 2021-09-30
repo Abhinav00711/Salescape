@@ -1,6 +1,7 @@
 class Wholesaler {
   final String wid;
   final String name;
+  final String bname;
   final String phone;
   final String state;
   final String email;
@@ -9,6 +10,7 @@ class Wholesaler {
   Wholesaler({
     required this.wid,
     required this.name,
+    required this.bname,
     required this.phone,
     required this.state,
     required this.email,
@@ -19,6 +21,7 @@ class Wholesaler {
     return Wholesaler(
       wid: json['wid'] as String,
       name: json['name'] as String,
+      bname: json['bname'] as String,
       phone: json['phone'] as String,
       state: json['state'] as String,
       email: json['email'] as String,
@@ -30,6 +33,7 @@ class Wholesaler {
     return {
       'wid': wid,
       'name': name,
+      'bname': bname,
       'phone': phone,
       'state': state,
       'email': email,

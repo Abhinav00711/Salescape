@@ -54,6 +54,34 @@ class ProfileForm extends StatelessWidget {
                 color: Colors.white,
               ),
               decoration: registerInputDecoration(
+                hintText: 'Business Name',
+                icon: FontAwesomeIcons.briefcase,
+              ),
+              enabled: false,
+              initialValue: user.bname,
+              keyboardType: TextInputType.name,
+              autocorrect: false,
+              cursorColor: Colors.white,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value!.trim().isEmpty) {
+                  return 'Please enter your business name.';
+                } else if (!RegExp('[a-zA-Z0-9]').hasMatch(value.trim())) {
+                  return 'Invalid business name';
+                } else {
+                  return null;
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextFormField(
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              decoration: registerInputDecoration(
                 hintText: 'Phone',
                 icon: FontAwesomeIcons.phone,
               ),
