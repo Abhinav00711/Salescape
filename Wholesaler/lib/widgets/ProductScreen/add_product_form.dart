@@ -249,7 +249,7 @@ class _AddProductState extends State<AddProduct> {
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return 'Please enter product price.';
-                          } else if (int.parse(value.trim()) == 0) {
+                          } else if (RegExp('[0]').hasMatch(value.trim())) {
                             return 'Enter some value larger than 0';
                           } else {
                             return null;
