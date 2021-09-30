@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:retailer/services/firestore_service.dart';
-import 'package:retailer/widgets/SearchScreen/product_tile.dart';
+import 'package:retailer/widgets/SearchScreen/search_tile.dart';
 import 'package:retailer/widgets/SearchScreen/search_bar.dart';
 import '../models/product.dart';
 
@@ -64,8 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
             Expanded(
               child: ListView.builder(
                 itemCount: products.length,
-                itemBuilder: (_, index) =>
-                    ProductTile(product: products[index]),
+                itemBuilder: (_, index) => SearchTile(product: products[index]),
               ),
             ),
           ],
