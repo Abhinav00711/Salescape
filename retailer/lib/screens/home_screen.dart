@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:retailer/data/industry_data.dart';
+import 'package:retailer/screens/search_screen.dart';
 import 'package:retailer/widgets/HomeScreen/industry_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -78,16 +79,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   animationController: animationController,
                                   industry: industries[index],
                                   callBack: () {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => SeriesDetailScreen(
-                                    //       title: series[index].title,
-                                    //       color: series[index].color,
-                                    //       description: series[index].description,
-                                    //     ),
-                                    //   ),
-                                    // );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SearchScreen(
+                                          industry: industries[index].name,
+                                        ),
+                                      ),
+                                    );
                                   },
                                 );
                               },

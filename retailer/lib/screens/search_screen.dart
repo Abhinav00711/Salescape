@@ -8,7 +8,12 @@ import 'package:retailer/widgets/SearchScreen/search_bar.dart';
 import '../models/product.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  const SearchScreen({
+    Key? key,
+    this.industry,
+  }) : super(key: key);
+
+  final String? industry;
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -43,16 +48,32 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future init() async {
-    final products = await FirestoreService().getAllProductsByQuery(query);
+    final products = widget.industry == null
+        ? await FirestoreService().getAllProductsByQuery(query)
+        : await FirestoreService()
+            .getAllIndustryProductsByQuery(query, widget.industry!);
 
     setState(() => this.products = products);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: SafeArea(
+    return Scaffold(
+      appBar: widget.industry == null
+          ? null
+          : AppBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              iconTheme: IconThemeData(color: Colors.black),
+              centerTitle: true,
+              title: Text(
+                widget.industry!,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+      backgroundColor: Theme.of(context).primaryColor,
+      body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -74,7 +95,10 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future searchProduct(String query) async => debounce(() async {
-        final products = await FirestoreService().getAllProductsByQuery(query);
+        final products = widget.industry == null
+            ? await FirestoreService().getAllProductsByQuery(query)
+            : await FirestoreService()
+                .getAllIndustryProductsByQuery(query, widget.industry!);
 
         if (!mounted) return;
 

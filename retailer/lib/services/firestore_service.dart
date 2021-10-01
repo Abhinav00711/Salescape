@@ -117,4 +117,24 @@ class FirestoreService {
     }
     return productList;
   }
+
+  Future<List<Product>> getAllIndustryProductsByQuery(
+      String query, String industry) async {
+    var _productRef = _firestore.collection('products').withConverter<Product>(
+          fromFirestore: (snapshots, _) => Product.fromJson(snapshots.data()!),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    List<Product> productList = [];
+    List<QueryDocumentSnapshot<Product>> products =
+        await _productRef.get().then((products) => products.docs);
+    for (var product in products) {
+      var p = product.data();
+      if ((p.industry == industry) &&
+          (p.name.toLowerCase().contains(query.toLowerCase()) ||
+              p.bname.toLowerCase().contains(query.toLowerCase()))) {
+        productList.add(p);
+      }
+    }
+    return productList;
+  }
 }
