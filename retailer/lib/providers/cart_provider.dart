@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/cart_item.dart';
+import '../services/firestore_service.dart';
 
 class CartProvider extends ChangeNotifier {
   /// Internal, private state of the cart.
@@ -21,11 +22,20 @@ class CartProvider extends ChangeNotifier {
 
   String get totalItems => _items.length.toString();
 
-  void add(CartItem item) {
-    if (!_isRedundant(item)) {
+  Future<bool> add(CartItem item) async {
+    if (_items.isNotEmpty) {
+      if (await _isSameWholesaler(item)) {
+        if (!_isRedundant(item)) {
+          _items.add(item);
+        }
+      } else {
+        return false;
+      }
+    } else {
       _items.add(item);
     }
     notifyListeners();
+    return true;
   }
 
   void removeAll() {
@@ -35,6 +45,19 @@ class CartProvider extends ChangeNotifier {
 
   void remove(CartItem item) {
     _items.remove(item);
+  }
+
+  Future<bool> _isSameWholesaler(CartItem item) async {
+    String wid1 = await FirestoreService()
+        .getProduct(_items[0].pid)
+        .then((product) => product!.wid);
+    String wid2 = await FirestoreService()
+        .getProduct(item.pid)
+        .then((product) => product!.wid);
+    if (wid1 == wid2) {
+      return true;
+    }
+    return false;
   }
 
   bool _isRedundant(CartItem item) {

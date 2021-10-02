@@ -35,6 +35,14 @@ class FirestoreService {
 
   // Order Services
 
+  Future<void> addOrder(Order order) async {
+    var _orderRef = _firestore.collection('orders').withConverter<Order>(
+          fromFirestore: (snapshots, _) => Order.fromJson(snapshots.data()!),
+          toFirestore: (order, _) => order.toJson(),
+        );
+    await _orderRef.doc(order.oid).set(order);
+  }
+
   Future<List<Order>> getAllUserOrders(String rid) async {
     var _orderRef = _firestore.collection('orders').withConverter<Order>(
           fromFirestore: (snapshots, _) => Order.fromJson(snapshots.data()!),
@@ -85,6 +93,14 @@ class FirestoreService {
   }
 
   //Product Services
+
+  Future<Product?> getProduct(String pid) async {
+    var _productRef = _firestore.collection('products').withConverter<Product>(
+          fromFirestore: (snapshots, _) => Product.fromJson(snapshots.data()!),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    return (await _productRef.doc(pid).get()).data();
+  }
 
   Future<List<Product>> getAllProducts() async {
     var _productRef = _firestore.collection('products').withConverter<Product>(

@@ -157,22 +157,28 @@ class _CartScreenState extends State<CartScreen> {
                                     Order order = Order(
                                       rid: Global.userData!.rid,
                                       oid: Uuid().v1().replaceAll('-', ''),
+                                      wid: await FirestoreService()
+                                          .getProduct(_items[0].pid)
+                                          .then((product) => product!.wid),
                                       items: _items,
                                       total: _total,
                                       dateTime: DateTime.now(),
                                       status: OrderStatus.pending,
                                     );
-                                    // await FirestoreService().addOrder(order);
-                                    // context.read<CartProvider>().removeAll();
-                                    // Navigator.pop(context);
-                                    // _selectCategory(
-                                    //   context,
-                                    //   Icons.check,
-                                    //   'Order Requested Successfully',
-                                    //   'Keep Shopping',
-                                    //   const Color(0xff22A45D),
-                                    //   'Your order request is successfully placed. We will contact you soon, till then stay put:)',
-                                    // );
+                                    await FirestoreService().addOrder(order);
+                                    context.read<CartProvider>().removeAll();
+                                    //Navigator.pop(context);
+                                    setState(() {
+                                      _isConfirming = false;
+                                    });
+                                    _selectCategory(
+                                      context,
+                                      Icons.check,
+                                      'Order Requested Successfully',
+                                      'Keep Shopping',
+                                      const Color(0xff22A45D),
+                                      'Your order request is successfully placed. We will contact you soon, till then stay put:)',
+                                    );
                                   },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.amber,

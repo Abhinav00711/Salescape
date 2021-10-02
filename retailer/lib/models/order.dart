@@ -13,6 +13,8 @@ enum OrderStatus {
 class Order {
   final String rid;
   final String oid;
+  final String wid;
+  final String? did;
   final List<CartItem> items;
   final OrderStatus status;
   final int total;
@@ -21,6 +23,8 @@ class Order {
   Order({
     required this.rid,
     required this.oid,
+    required this.wid,
+    this.did,
     required this.items,
     required this.total,
     required this.dateTime,
@@ -31,6 +35,8 @@ class Order {
     return Order(
       rid: json['rid'] as String,
       oid: json['oid'] as String,
+      wid: json['wid'] as String,
+      did: json['did'] == null ? null : json['did'] as String,
       items: (jsonDecode(json['items'] as String) as List)
           .map((i) => CartItem.fromJson(i))
           .toList(),
@@ -44,6 +50,8 @@ class Order {
     return {
       'rid': rid,
       'oid': oid,
+      'wid': wid,
+      'did': did,
       'items': jsonEncode(items),
       'total': total,
       'date': dateTime,
