@@ -65,151 +65,158 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     late List<CartItem> _items;
     bool _isConfirming = false;
-    int _total = context.read<CartProvider>().totalPrice;
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: FutureBuilder<List<CartItem>>(
-          future: context.read<CartProvider>().items,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error'),
-              );
-            } else if (snapshot.hasData) {
-              _items = snapshot.data!;
-              if (_items.isNotEmpty) {
-                return Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      'Order Summary',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overScroll) {
-                          overScroll.disallowGlow();
-                          return false;
-                        },
-                        child: ListView.builder(
-                          itemCount: _items.length,
-                          itemBuilder: (context, index) {
-                            return OrderItem(item: _items[index]);
+    double _total = context.watch<CartProvider>().totalPrice;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        iconTheme: IconThemeData(color: Colors.black),
+        centerTitle: true,
+        title: Text(
+          'Order Summary',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: Container(
+        color: Theme.of(context).primaryColor,
+        child: FutureBuilder<List<CartItem>>(
+            future: context.watch<CartProvider>().items,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error'),
+                );
+              } else if (snapshot.hasData) {
+                _items = snapshot.data!;
+                if (_items.isNotEmpty) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: NotificationListener<
+                            OverscrollIndicatorNotification>(
+                          onNotification: (overScroll) {
+                            overScroll.disallowGlow();
+                            return false;
                           },
+                          child: ListView.builder(
+                            itemCount: _items.length,
+                            itemBuilder: (context, index) {
+                              return OrderItem(item: _items[index]);
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      color: const Color(0xff092E34),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.info_outline_rounded,
-                                color: Colors.white,
-                              ),
-                              RichText(
-                                text: TextSpan(
-                                  text: ' Total: ',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
-                                    letterSpacing: 0.18,
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 70),
+                        color: const Color(0xff092E34),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.info_outline_rounded,
+                                  color: Colors.white,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    text: ' Total: ',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      letterSpacing: 0.18,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: '₹${_total}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  children: [
-                                    TextSpan(
-                                      text: '₹${_total}',
+                                ),
+                              ],
+                            ),
+                            ElevatedButton(
+                              child: _isConfirming
+                                  ? CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : Text(
+                                      'CONFIRM',
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xff092E34),
                                       ),
                                     ),
-                                  ],
+                              onPressed: _items.isEmpty
+                                  ? null
+                                  : () async {
+                                      setState(() {
+                                        _isConfirming = true;
+                                      });
+                                      Order order = Order(
+                                        rid: Global.userData!.rid,
+                                        oid: Uuid().v1().replaceAll('-', ''),
+                                        wid: await FirestoreService()
+                                            .getProduct(_items[0].pid)
+                                            .then((product) => product!.wid),
+                                        items: _items,
+                                        total: _total,
+                                        dateTime: DateTime.now(),
+                                        status: OrderStatus.pending,
+                                      );
+                                      await FirestoreService().addOrder(order);
+                                      context.read<CartProvider>().removeAll();
+                                      //Navigator.pop(context);
+                                      setState(() {
+                                        _isConfirming = false;
+                                      });
+                                      _selectCategory(
+                                        context,
+                                        Icons.check,
+                                        'Order Requested Successfully',
+                                        'Keep Shopping',
+                                        const Color(0xff22A45D),
+                                        'Your order request is successfully placed. We will contact you soon, till then stay put:)',
+                                      );
+                                    },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.amber,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 10),
+                                textStyle: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                shadowColor: Colors.amberAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
                                 ),
                               ),
-                            ],
-                          ),
-                          ElevatedButton(
-                            child: _isConfirming
-                                ? CircularProgressIndicator(
-                                    color: Colors.white,
-                                  )
-                                : Text(
-                                    'CONFIRM',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xff092E34),
-                                    ),
-                                  ),
-                            onPressed: _items.isEmpty
-                                ? null
-                                : () async {
-                                    setState(() {
-                                      _isConfirming = true;
-                                    });
-                                    Order order = Order(
-                                      rid: Global.userData!.rid,
-                                      oid: Uuid().v1().replaceAll('-', ''),
-                                      wid: await FirestoreService()
-                                          .getProduct(_items[0].pid)
-                                          .then((product) => product!.wid),
-                                      items: _items,
-                                      total: _total,
-                                      dateTime: DateTime.now(),
-                                      status: OrderStatus.pending,
-                                    );
-                                    await FirestoreService().addOrder(order);
-                                    context.read<CartProvider>().removeAll();
-                                    //Navigator.pop(context);
-                                    setState(() {
-                                      _isConfirming = false;
-                                    });
-                                    _selectCategory(
-                                      context,
-                                      Icons.check,
-                                      'Order Requested Successfully',
-                                      'Keep Shopping',
-                                      const Color(0xff22A45D),
-                                      'Your order request is successfully placed. We will contact you soon, till then stay put:)',
-                                    );
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.amber,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 10),
-                              textStyle: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              shadowColor: Colors.amberAccent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
+                    ],
+                  );
+                } else {
+                  return EmptyCartScreen();
+                }
               } else {
-                return EmptyCartScreen();
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).accentColor,
+                  ),
+                );
               }
-            } else {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).accentColor,
-                ),
-              );
-            }
-          }),
+            }),
+      ),
     );
   }
 }

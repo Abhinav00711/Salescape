@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import '../../models/cart_item.dart';
+import '../../providers/cart_provider.dart';
 
 class OrderItem extends StatelessWidget {
   final CartItem item;
@@ -33,37 +36,48 @@ class OrderItem extends StatelessWidget {
                       color: const Color(0xff092E34),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    item.pid,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      letterSpacing: -0.04,
-                      color: const Color(0xff092E34),
-                    ),
-                  ),
                   SizedBox(height: 20),
-                  Text('₹ ${item.price.toString()}'),
+                  Text('₹ ${item.price.toString()} (${item.unit})'),
                 ],
               ),
             ),
           ),
           Expanded(
             flex: 2,
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              padding: EdgeInsets.all(8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  InkWell(
+                    child: Icon(Icons.keyboard_arrow_up_rounded),
+                    onTap: () {
+                      Provider.of<CartProvider>(context, listen: false)
+                          .increaseQuantity(item);
+                    },
+                  ),
                   Text(
                     '${item.quantity}x',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
-                  )
+                  ),
+                  item.quantity == 1
+                      ? InkWell(
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          onTap: () {},
+                        )
+                      : InkWell(
+                          child: Icon(Icons.keyboard_arrow_down_rounded),
+                          onTap: () {
+                            Provider.of<CartProvider>(context, listen: false)
+                                .decreaseQuantity(item);
+                          },
+                        ),
                 ],
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/wholesaler.dart';
 import '../models/product.dart';
+import '../models/order.dart';
 
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
@@ -74,5 +75,56 @@ class FirestoreService {
         .delete()
         .then((value) => print("User Deleted"))
         .catchError((error) => print("Failed to delete user: $error"));
+  }
+
+  // Order Services
+
+  Future<List<Order>> getAllUserOrders(String wid) async {
+    var _orderRef = _firestore.collection('orders').withConverter<Order>(
+          fromFirestore: (snapshots, _) => Order.fromJson(snapshots.data()!),
+          toFirestore: (order, _) => order.toJson(),
+        );
+    List<Order> orderList = [];
+    List<QueryDocumentSnapshot<Order>> orders = await _orderRef
+        .where('wid', isEqualTo: wid)
+        .get()
+        .then((orders) => orders.docs);
+    for (var order in orders) {
+      orderList.add(order.data());
+    }
+    return orderList;
+  }
+
+  Future<List<Order>> getPendingUserOrders(String wid) async {
+    List<Order> orderList = await getAllUserOrders(wid);
+    List<Order> pendingList = [];
+    for (var order in orderList) {
+      if (order.status == OrderStatus.pending) {
+        pendingList.add(order);
+      }
+    }
+    return pendingList;
+  }
+
+  Future<List<Order>> getAcceptedUserOrders(String wid) async {
+    List<Order> orderList = await getAllUserOrders(wid);
+    List<Order> acceptedList = [];
+    for (var order in orderList) {
+      if (order.status == OrderStatus.accepted) {
+        acceptedList.add(order);
+      }
+    }
+    return acceptedList;
+  }
+
+  Future<List<Order>> getCompletedUserOrders(String wid) async {
+    List<Order> orderList = await getAllUserOrders(wid);
+    List<Order> completedList = [];
+    for (var order in orderList) {
+      if (order.status == OrderStatus.completed) {
+        completedList.add(order);
+      }
+    }
+    return completedList;
   }
 }
