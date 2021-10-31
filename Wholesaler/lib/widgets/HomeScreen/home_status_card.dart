@@ -7,7 +7,7 @@ class HomeStatusCard extends StatelessWidget {
     required this.title,
   }) : super(key: key);
 
-  final String value;
+  final int value;
   final String title;
 
   @override
@@ -39,7 +39,7 @@ class HomeStatusCard extends StatelessWidget {
                 flex: 2,
                 child: Center(
                   child: Text(
-                    value,
+                    value.toString(),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

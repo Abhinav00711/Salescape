@@ -4,6 +4,7 @@ class Retailer {
   final String phone;
   final String state;
   final String email;
+  final String delivery_address;
 
   Retailer({
     required this.rid,
@@ -11,6 +12,7 @@ class Retailer {
     required this.phone,
     required this.state,
     required this.email,
+    required this.delivery_address,
   });
 
   factory Retailer.fromJson(Map<String, Object?> json) {
@@ -20,6 +22,7 @@ class Retailer {
       phone: json['phone'] as String,
       state: json['state'] as String,
       email: json['email'] as String,
+      delivery_address: json['DAddress'] as String,
     );
   }
 
@@ -30,6 +33,7 @@ class Retailer {
       'phone': phone,
       'state': state,
       'email': email,
+      'DAddress': delivery_address,
     };
   }
 }

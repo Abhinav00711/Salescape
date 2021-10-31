@@ -20,7 +20,7 @@ class ProfileForm extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -48,7 +48,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -79,7 +79,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -107,7 +107,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -128,6 +128,34 @@ class ProfileForm extends StatelessWidget {
                   return 'Please enter your email.';
                 } else if (!value.trim().contains('@')) {
                   return 'Invalid Email';
+                } else {
+                  return null;
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+            child: TextFormField(
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              decoration: registerInputDecoration(
+                hintText: 'Delivery Address',
+                icon: FontAwesomeIcons.addressBook,
+              ),
+              enabled: false,
+              initialValue: user.delivery_address,
+              keyboardType: TextInputType.multiline,
+              minLines: 1,
+              maxLines: 3,
+              autocorrect: false,
+              cursorColor: Colors.white,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value!.trim().isEmpty) {
+                  return 'Please enter your delivery address.';
                 } else {
                   return null;
                 }

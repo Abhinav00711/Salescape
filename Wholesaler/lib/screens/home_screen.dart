@@ -10,9 +10,43 @@ import '../providers/auth_provider.dart';
 import '../widgets/HomeScreen/home_button.dart';
 import '../widgets/HomeScreen/home_status_card.dart';
 import '../data/global.dart';
+import '../services/firestore_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _pending = 0;
+  int _accepted = 0;
+  int _completed = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    asyncMethod();
+  }
+
+  void asyncMethod() async {
+    await FirestoreService()
+        .getPendingUserOrders(Global.userData!.wid)
+        .then((value) {
+      _pending = value.length;
+    });
+    await FirestoreService()
+        .getAcceptedUserOrders(Global.userData!.wid)
+        .then((value) {
+      _accepted = value.length;
+    });
+    await FirestoreService()
+        .getCompletedUserOrders(Global.userData!.wid)
+        .then((value) {
+      _completed = value.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,15 +144,15 @@ class HomeScreen extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   HomeStatusCard(
-                                    value: '0',
+                                    value: _pending,
                                     title: 'Pending',
                                   ),
                                   HomeStatusCard(
-                                    value: '0',
-                                    title: 'Active',
+                                    value: _accepted,
+                                    title: 'Accepted',
                                   ),
                                   HomeStatusCard(
-                                    value: '0',
+                                    value: _completed,
                                     title: 'Completed',
                                   ),
                                 ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 InputDecoration registerInputDecoration(
     {required String hintText, required IconData icon}) {
   return InputDecoration(
+    counterStyle: TextStyle(color: Colors.white),
     contentPadding: const EdgeInsets.symmetric(vertical: 18.0),
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     hintStyle: const TextStyle(color: Colors.white, fontSize: 18),

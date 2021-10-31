@@ -6,6 +6,7 @@ class Wholesaler {
   final String state;
   final String email;
   final String industry;
+  final String pickup_address;
 
   Wholesaler({
     required this.wid,
@@ -15,6 +16,7 @@ class Wholesaler {
     required this.state,
     required this.email,
     required this.industry,
+    required this.pickup_address,
   });
 
   factory Wholesaler.fromJson(Map<String, Object?> json) {
@@ -26,6 +28,7 @@ class Wholesaler {
       state: json['state'] as String,
       email: json['email'] as String,
       industry: json['industry'] as String,
+      pickup_address: json['PAddress'] as String,
     );
   }
 
@@ -38,6 +41,7 @@ class Wholesaler {
       'state': state,
       'email': email,
       'industry': industry,
+      'PAddress': pickup_address,
     };
   }
 }

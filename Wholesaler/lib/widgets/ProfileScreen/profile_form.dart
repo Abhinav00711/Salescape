@@ -19,7 +19,7 @@ class ProfileForm extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -47,7 +47,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -75,7 +75,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -104,7 +104,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -132,7 +132,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -160,7 +160,7 @@ class ProfileForm extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: TextFormField(
               style: const TextStyle(
                 fontSize: 18,
@@ -181,6 +181,34 @@ class ProfileForm extends StatelessWidget {
                   return 'Please enter your industry.';
                 } else if (!RegExp('[a-zA-Z]').hasMatch(value.trim())) {
                   return 'Invalid industry';
+                } else {
+                  return null;
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+            child: TextFormField(
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              decoration: registerInputDecoration(
+                hintText: 'Pick-up Address',
+                icon: FontAwesomeIcons.addressBook,
+              ),
+              enabled: false,
+              initialValue: user.pickup_address,
+              keyboardType: TextInputType.multiline,
+              minLines: 1,
+              maxLines: 3,
+              autocorrect: false,
+              cursorColor: Colors.white,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value!.trim().isEmpty) {
+                  return 'Please enter your pick-up address.';
                 } else {
                   return null;
                 }

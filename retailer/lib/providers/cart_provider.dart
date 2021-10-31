@@ -45,6 +45,7 @@ class CartProvider extends ChangeNotifier {
 
   void remove(CartItem item) {
     _items.remove(item);
+    notifyListeners();
   }
 
   Future<bool> _isSameWholesaler(CartItem item) async {

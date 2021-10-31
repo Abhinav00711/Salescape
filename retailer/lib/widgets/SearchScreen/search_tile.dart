@@ -107,7 +107,7 @@ class SearchTile extends StatelessWidget {
                         }
                       },
                       icon: Icon(Icons.shopping_cart),
-                      label: Text('Add to Cart'),
+                      label: Text('ADD'),
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0xff092E34),
                         shape: RoundedRectangleBorder(

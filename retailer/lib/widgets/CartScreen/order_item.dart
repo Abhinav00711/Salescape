@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/cart_item.dart';
 import '../../providers/cart_provider.dart';
+import '../../utils/custom_dialog_box.dart';
 
 class OrderItem extends StatelessWidget {
   final CartItem item;
@@ -69,7 +70,26 @@ class OrderItem extends StatelessWidget {
                             Icons.delete,
                             color: Colors.red,
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return CustomDialogBox(
+                                  title: 'Are you sure?',
+                                  descriptions:
+                                      'Do you want to remove the selected item?',
+                                  text: 'Yes',
+                                  img: 'assets/images/removing.png',
+                                  onPressed: () {
+                                    Provider.of<CartProvider>(context,
+                                            listen: false)
+                                        .remove(item);
+                                  },
+                                );
+                              },
+                            );
+                          },
                         )
                       : InkWell(
                           child: Icon(Icons.keyboard_arrow_down_rounded),

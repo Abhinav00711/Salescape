@@ -11,6 +11,7 @@ import '../services/firestore_service.dart';
 import '../widgets/CartScreen/empty_cart_screen.dart';
 import '../widgets/CartScreen/order_item.dart';
 import '../utils/dialog.dart';
+import '../utils/custom_dialog_box.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -171,19 +172,37 @@ class _CartScreenState extends State<CartScreen> {
                                         dateTime: DateTime.now(),
                                         status: OrderStatus.pending,
                                       );
-                                      await FirestoreService().addOrder(order);
-                                      context.read<CartProvider>().removeAll();
-                                      //Navigator.pop(context);
-                                      setState(() {
-                                        _isConfirming = false;
-                                      });
-                                      _selectCategory(
-                                        context,
-                                        Icons.check,
-                                        'Order Requested Successfully',
-                                        'Keep Shopping',
-                                        const Color(0xff22A45D),
-                                        'Your order request is successfully placed. We will contact you soon, till then stay put:)',
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) {
+                                          return CustomDialogBox(
+                                            title: 'Are you sure?',
+                                            descriptions:
+                                                'Do you want to confirm the order?',
+                                            text: 'Yes',
+                                            img:
+                                                'assets/images/confirmation.png',
+                                            onPressed: () async {
+                                              await FirestoreService()
+                                                  .addOrder(order);
+                                              context
+                                                  .read<CartProvider>()
+                                                  .removeAll();
+                                              setState(() {
+                                                _isConfirming = false;
+                                              });
+                                              _selectCategory(
+                                                context,
+                                                Icons.check,
+                                                'Order Requested Successfully',
+                                                'Keep Shopping',
+                                                const Color(0xff22A45D),
+                                                'Your order request is successfully placed. We will contact you soon, till then stay put:)',
+                                              );
+                                            },
+                                          );
+                                        },
                                       );
                                     },
                               style: ElevatedButton.styleFrom(
