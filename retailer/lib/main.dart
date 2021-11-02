@@ -13,6 +13,7 @@ import './screens/error_screen.dart';
 import './screens/loading_screen.dart';
 import './providers/auth_provider.dart';
 import './providers/cart_provider.dart';
+import './providers/filter_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
             providers: [
               ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider()),
               ChangeNotifierProvider<CartProvider>.value(value: CartProvider()),
+              ChangeNotifierProvider<FilterProvider>.value(
+                  value: FilterProvider()),
             ],
             child: MyMaterialApp(Wrapper()),
           );
