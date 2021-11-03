@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../providers/filter_provider.dart';
 
@@ -20,6 +21,7 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   List<String> _myLocations = [];
   List<String> _myIndustries = [];
+  RangeValues _values = RangeValues(10, 100000);
 
   List _industries = [
     {
@@ -193,6 +195,8 @@ class _FilterScreenState extends State<FilterScreen> {
         Provider.of<FilterProvider>(context, listen: false).locations;
     _myIndustries =
         Provider.of<FilterProvider>(context, listen: false).industries;
+    var v = Provider.of<FilterProvider>(context, listen: false).range;
+    _values = RangeValues(v[0].toDouble(), v[1].toDouble());
   }
 
   @override
@@ -211,6 +215,7 @@ class _FilterScreenState extends State<FilterScreen> {
       ),
       body: Container(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -280,6 +285,161 @@ class _FilterScreenState extends State<FilterScreen> {
                     _myIndustries = (value).map((e) => e.toString()).toList();
                   });
                 },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.tealAccent,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Filter by Price Range',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 20),
+                      child: SliderTheme(
+                        data: SliderThemeData(
+                          activeTickMarkColor: Colors.transparent,
+                          inactiveTickMarkColor: Colors.transparent,
+                          activeTrackColor: Colors.amberAccent[100],
+                          inactiveTrackColor: Colors.black12,
+                          thumbColor: Colors.teal,
+                          overlayColor: Colors.tealAccent[100],
+                        ),
+                        child: RangeSlider(
+                          min: 1,
+                          max: 1000000,
+                          divisions: 100000,
+                          labels: RangeLabels(
+                            _values.start.round().toString(),
+                            _values.end.round().toString(),
+                          ),
+                          values: _values,
+                          onChanged: (v) {
+                            setState(() {
+                              _values = v;
+                            });
+                          },
+                          onChangeEnd: (value) {
+                            Provider.of<FilterProvider>(context, listen: false)
+                                .editRange(value.start, value.end);
+                          },
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Min',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Container(
+                                width: 120.0,
+                                decoration: new BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                foregroundDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                    color: const Color(0xff092E34),
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.rupeeSign,
+                                      size: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        _values.start.round().toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Max',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Container(
+                                width: 120.0,
+                                decoration: new BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                foregroundDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                    color: const Color(0xff092E34),
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.rupeeSign,
+                                      size: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        _values.end.round().toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

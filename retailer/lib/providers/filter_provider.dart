@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class FilterProvider extends ChangeNotifier {
   final List<String> _locations = [];
   final List<String> _industries = [];
-  final List<int> _range = [1, 10000000000000];
+  final List<double> _range = [1, 1000000];
 
   List<String> get locations => [..._locations];
   List<String> get industries => [..._industries];
-  List<int> get range => [..._range];
+  List<double> get range => [..._range];
 
   void editLocations(List<String> locations) {
     _locations.clear();
@@ -21,7 +21,7 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editRange(int min, int max) {
+  void editRange(double min, double max) {
     _range.clear();
     _range.add(min);
     _range.add(max);

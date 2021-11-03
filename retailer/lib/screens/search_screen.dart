@@ -81,6 +81,16 @@ class _SearchScreenState extends State<SearchScreen> {
       products.clear();
       products.addAll(listProducts);
     }
+    var range = Provider.of<FilterProvider>(context, listen: false).range;
+    if (range.isNotEmpty) {
+      for (var product in products) {
+        if (product.price < range[0] || product.price > range[1]) {
+          listProducts.remove(product);
+        }
+      }
+      products.clear();
+      products.addAll(listProducts);
+    }
     setState(() => this.products = products);
   }
 
@@ -171,6 +181,16 @@ class _SearchScreenState extends State<SearchScreen> {
             var wState =
                 await FirestoreService().getWholesalerState(product.wid);
             if (!state.contains(wState)) {
+              listProducts.remove(product);
+            }
+          }
+          products.clear();
+          products.addAll(listProducts);
+        }
+        var range = Provider.of<FilterProvider>(context, listen: false).range;
+        if (range.isNotEmpty) {
+          for (var product in products) {
+            if (product.price < range[0] || product.price > range[1]) {
               listProducts.remove(product);
             }
           }
