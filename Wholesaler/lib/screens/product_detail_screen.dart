@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
-import '../utils/curve_painter.dart';
+import '../../widgets/ProductScreen/edit_product_form.dart';
 import '../../widgets/ProductDetailScreen/product_item.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -20,48 +20,87 @@ class ProductDetailScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
       ),
-      body: SafeArea(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditProduct(product: product)),
+          );
+        },
+      ),
+      backgroundColor: Colors.teal.shade300,
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overScroll) {
+          overScroll.disallowGlow();
+          return false;
+        },
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              AnimatedContainer(
-                duration: Duration(milliseconds: 500),
-                curve: Curves.ease,
-                height: MediaQuery.of(context).size.height * 0.4,
-                child: CustomPaint(
-                  painter: CurvePainter(true, color: Colors.teal),
-                  child: Container(
-                    padding: EdgeInsets.only(bottom: 0),
-                    child: Center(
-                      child: SeriesItem(
-                        image: product.imageUrl,
-                        name: product.name,
-                      ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  child: Center(
+                    child: ProductItem(
+                      image: product.imageUrl,
+                      name: product.name,
                     ),
                   ),
                 ),
               ),
-              AnimatedContainer(
-                duration: Duration(milliseconds: 500),
-                curve: Curves.ease,
-                height: MediaQuery.of(context).size.height * 0.45,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Container(
                   color: Colors.transparent,
-                  padding: EdgeInsets.only(top: 55),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-                    child: Text(
-                      product.description,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        letterSpacing: -0.05,
-                      ),
+                  child: Text(
+                    product.description,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      letterSpacing: -0.05,
                     ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff092E34),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${product.price} / ${product.unit}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          letterSpacing: -0.05,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Stock : ${product.stock}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          letterSpacing: -0.05,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
