@@ -109,4 +109,12 @@ class CartProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  int getProductQuantity(String pid) {
+    int q = 0;
+    for (var i in _items.where((element) => element.pid == pid)) {
+      q = i.quantity;
+    }
+    return q;
+  }
 }
