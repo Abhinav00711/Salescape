@@ -44,6 +44,16 @@ class FirestoreService {
     return (await _userRef.doc(wid).get()).data()!.state;
   }
 
+  Future<String> getWholesalerBname(String wid) async {
+    var _userRef =
+        _firestore.collection('wholesalers').withConverter<Wholesaler>(
+              fromFirestore: (snapshots, _) =>
+                  Wholesaler.fromJson(snapshots.data()!),
+              toFirestore: (user, _) => user.toJson(),
+            );
+    return (await _userRef.doc(wid).get()).data()!.bname;
+  }
+
   // Order Services
 
   Future<void> addOrder(Order order) async {

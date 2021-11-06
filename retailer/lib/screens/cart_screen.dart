@@ -161,12 +161,15 @@ class _CartScreenState extends State<CartScreen> {
                                       setState(() {
                                         _isConfirming = true;
                                       });
+                                      String wid = await FirestoreService()
+                                          .getProduct(_items[0].pid)
+                                          .then((product) => product!.wid);
                                       Order order = Order(
                                         rid: Global.userData!.rid,
                                         oid: Uuid().v1().replaceAll('-', ''),
-                                        wid: await FirestoreService()
-                                            .getProduct(_items[0].pid)
-                                            .then((product) => product!.wid),
+                                        wid: wid,
+                                        bname: await FirestoreService()
+                                            .getWholesalerBname(wid),
                                         items: _items,
                                         total: _total,
                                         dateTime: DateTime.now(),
