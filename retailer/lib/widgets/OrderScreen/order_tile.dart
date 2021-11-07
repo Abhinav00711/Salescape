@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../screens/pending_detail_screen.dart';
+import '../../screens/active_detail_screen.dart';
 import '../../models/order.dart';
 
 class OrderTile extends StatelessWidget {
@@ -24,11 +25,12 @@ class OrderTile extends StatelessWidget {
               break;
             }
           case OrderStatus.accepted:
-            {
-              break;
-            }
           case OrderStatus.completed:
             {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => ActiveDetailScreen(order: order)),
+              );
               break;
             }
         }
