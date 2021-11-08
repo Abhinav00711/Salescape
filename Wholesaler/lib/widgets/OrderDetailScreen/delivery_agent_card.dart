@@ -2,13 +2,35 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class DeliveryAgentCard extends StatelessWidget {
+import '../../models/retailer.dart';
+import '../../services/firestore_service.dart';
+
+class DeliveryAgentCard extends StatefulWidget {
   const DeliveryAgentCard({
     Key? key,
+    required this.rid,
     required this.isCompleted,
   }) : super(key: key);
 
+  final String rid;
   final bool isCompleted;
+
+  @override
+  _DeliveryAgentCardState createState() => _DeliveryAgentCardState();
+}
+
+class _DeliveryAgentCardState extends State<DeliveryAgentCard> {
+  late Retailer _retailer;
+
+  @override
+  void initState() {
+    super.initState();
+    getRetailerData();
+  }
+
+  void getRetailerData() async {
+    _retailer = await FirestoreService().getRetailer(widget.rid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +53,46 @@ class DeliveryAgentCard extends StatelessWidget {
                 RichText(
                   textAlign: TextAlign.left,
                   text: TextSpan(
+                    text: 'Retailer Name : ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: _retailer.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 5),
+                RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: 'Delivery Address : ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: _retailer.delivery_address,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 5),
+                RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
                     text: 'Delivery Agent : ',
                     style: TextStyle(
                       color: Colors.white,
@@ -47,8 +109,8 @@ class DeliveryAgentCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: isCompleted ? 0 : 5),
-                isCompleted
+                SizedBox(height: widget.isCompleted ? 0 : 5),
+                widget.isCompleted
                     ? Container()
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

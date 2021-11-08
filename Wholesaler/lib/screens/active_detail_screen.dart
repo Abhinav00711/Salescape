@@ -35,6 +35,7 @@ class ActiveDetailScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           DeliveryAgentCard(
+            rid: order.rid,
             isCompleted: order.status == OrderStatus.completed,
           ),
           Expanded(
@@ -79,15 +80,6 @@ class ActiveDetailScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                  Text(
-                    order.bname,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      letterSpacing: 0.18,
-                    ),
                   ),
                   RichText(
                     text: TextSpan(
@@ -146,7 +138,7 @@ class ActiveDetailScreen extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Delivery Address : ',
+                      text: 'Pickup Address : ',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -154,7 +146,7 @@ class ActiveDetailScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: Global.userData!.delivery_address,
+                          text: Global.userData!.pickup_address,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                           ),

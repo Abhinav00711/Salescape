@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/wholesaler.dart';
+import '../models/retailer.dart';
 import '../models/product.dart';
 import '../models/order.dart';
 
@@ -37,6 +38,14 @@ class FirestoreService {
               toFirestore: (user, _) => user.toJson(),
             );
     await _userRef.doc(userData.wid).set(userData);
+  }
+
+  Future<Retailer> getRetailer(String rid) async {
+    var _userRef = _firestore.collection('retailers').withConverter<Retailer>(
+          fromFirestore: (snapshots, _) => Retailer.fromJson(snapshots.data()!),
+          toFirestore: (user, _) => user.toJson(),
+        );
+    return (await _userRef.doc(rid).get()).data()!;
   }
 
   //Product Services
@@ -126,5 +135,13 @@ class FirestoreService {
       }
     }
     return completedList;
+  }
+
+  Future<void> updateOrder(Order order) async {
+    var _orderRef = _firestore.collection('orders').withConverter<Order>(
+          fromFirestore: (snapshots, _) => Order.fromJson(snapshots.data()!),
+          toFirestore: (order, _) => order.toJson(),
+        );
+    await _orderRef.doc(order.oid).set(order);
   }
 }

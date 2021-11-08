@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../models/order.dart';
 import '../data/global.dart';
 import '../widgets/OrderDetailScreen/order_item.dart';
-import '../widgets/OrderDetailScreen/delivery_agent_card.dart';
+import '../widgets/OrderDetailScreen/retailer_card.dart';
+import '../services/firestore_service.dart';
 
-class ActiveDetailScreen extends StatelessWidget {
-  const ActiveDetailScreen({
+class PendingDetailScreen extends StatelessWidget {
+  const PendingDetailScreen({
     Key? key,
     required this.order,
   }) : super(key: key);
@@ -34,9 +36,7 @@ class ActiveDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          DeliveryAgentCard(
-            isCompleted: order.status == OrderStatus.completed,
-          ),
+          RetailerCard(rid: order.rid),
           Expanded(
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (overScroll) {
@@ -68,9 +68,7 @@ class ActiveDetailScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                       Text(
-                        order.status == OrderStatus.accepted
-                            ? ' ACTIVE'
-                            : ' COMPLETED',
+                        ' PENDING',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -79,15 +77,6 @@ class ActiveDetailScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                  Text(
-                    order.bname,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      letterSpacing: 0.18,
-                    ),
                   ),
                   RichText(
                     text: TextSpan(
@@ -146,7 +135,7 @@ class ActiveDetailScreen extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Delivery Address : ',
+                      text: 'Pickup Address : ',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -154,13 +143,58 @@ class ActiveDetailScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: Global.userData!.delivery_address,
+                          text: Global.userData!.pickup_address,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
                     ),
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          Order updatedOrder = Order(
+                            rid: order.rid,
+                            oid: order.oid,
+                            wid: order.wid,
+                            bname: order.bname,
+                            items: order.items,
+                            total: order.total,
+                            dateTime: order.dateTime,
+                            status: OrderStatus.accepted,
+                          );
+                          await FirestoreService().updateOrder(updatedOrder);
+                          // Replace screen to accepted
+                        },
+                        icon: Icon(FontAwesomeIcons.checkCircle),
+                        label: Text(
+                          'Accept',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.tealAccent,
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(FontAwesomeIcons.cross),
+                        label: Text(
+                          'Decline',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.redAccent,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
