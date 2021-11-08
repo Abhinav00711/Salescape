@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import './active_detail_screen.dart';
 import '../models/order.dart';
 import '../data/global.dart';
 import '../widgets/OrderDetailScreen/order_item.dart';
@@ -168,7 +169,11 @@ class PendingDetailScreen extends StatelessWidget {
                             status: OrderStatus.accepted,
                           );
                           await FirestoreService().updateOrder(updatedOrder);
-                          // Replace screen to accepted
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ActiveDetailScreen(order: order)),
+                          );
                         },
                         icon: Icon(FontAwesomeIcons.checkCircle),
                         label: Text(
