@@ -128,7 +128,7 @@ class _CartScreenState extends State<CartScreen> {
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       letterSpacing: 0.18,
                                     ),
                                     children: [
@@ -213,7 +213,7 @@ class _CartScreenState extends State<CartScreen> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 10),
                                 textStyle: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 shadowColor: Colors.amberAccent,
