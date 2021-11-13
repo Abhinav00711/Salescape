@@ -11,6 +11,7 @@ import '../../data/global.dart';
 import '../../models/product.dart';
 import '../../services/firebase_storage_service.dart';
 import '../../services/firestore_service.dart';
+import '../../screens/product_screen.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class AddProduct extends StatefulWidget {
 class _AddProductState extends State<AddProduct> {
   UploadTask? task;
   File? image;
+  bool _isConfirming = false;
 
   Future pickImage(ImageSource imageSource) async {
     try {
@@ -475,15 +477,20 @@ class _AddProductState extends State<AddProduct> {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      child: Text(
-                        'CONFIRM',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
+                      child: _isConfirming
+                          ? CircularProgressIndicator()
+                          : Text(
+                              'CONFIRM',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
                       onPressed: () async {
                         if (AddProduct._formKey.currentState!.validate()) {
+                          setState(() {
+                            _isConfirming = true;
+                          });
                           AddProduct._formKey.currentState!.save();
                           String tempPid = Uuid().v1().replaceAll('-', '');
                           if (image != null) {
@@ -505,8 +512,16 @@ class _AddProductState extends State<AddProduct> {
                               unit: _unit,
                               imageUrl: url,
                             );
-                            await FirestoreService().addProduct(product);
-                            Navigator.of(context).pop();
+                            await FirestoreService()
+                                .addProduct(product)
+                                .then((value) {
+                              setState(() {
+                                _isConfirming = false;
+                              });
+                            });
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => ProductScreen()));
                           }
                         }
                       },

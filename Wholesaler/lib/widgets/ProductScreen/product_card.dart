@@ -4,6 +4,7 @@ import 'package:wholesaler/widgets/ProductScreen/edit_product_form.dart';
 
 import '../../screens/product_detail_screen.dart';
 import '../../models/product.dart';
+import '../../utils/custom_dialog_box.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -93,8 +94,23 @@ class ProductCard extends StatelessWidget {
                         icon: Icon(Icons.delete),
                         color: Colors.red,
                         onPressed: () {
-                          FirestoreService()
-                              .deleteProduct(product, product.pid);
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return CustomDialogBox(
+                                title: 'Are you sure?',
+                                descriptions:
+                                    'Do you want to remove the selected item?',
+                                text: 'Yes',
+                                img: 'assets/images/removing.png',
+                                onPressed: () {
+                                  FirestoreService()
+                                      .deleteProduct(product, product.pid);
+                                },
+                              );
+                            },
+                          );
                         }),
                   ],
                 ),

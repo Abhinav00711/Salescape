@@ -169,11 +169,11 @@ class PendingDetailScreen extends StatelessWidget {
                             status: OrderStatus.accepted,
                           );
                           await FirestoreService().updateOrder(updatedOrder);
-                          // Navigator.of(context).pushReplacement(
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           ActiveDetailScreen(order: order)),
-                          // );
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ActiveDetailScreen(order: order)),
+                          );
                         },
                         icon: Icon(FontAwesomeIcons.checkCircle),
                         label: Text(
