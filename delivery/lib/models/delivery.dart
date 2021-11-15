@@ -4,7 +4,7 @@ class Delivery {
   final String phone;
   final String state;
   final String email;
-  final String status;
+  final int status;
 
   Delivery({
     required this.did,
@@ -22,7 +22,7 @@ class Delivery {
       phone: json['phone'] as String,
       state: json['state'] as String,
       email: json['email'] as String,
-      status: json['status'] as String,
+      status: json['status'] as int,
     );
   }
 
