@@ -26,4 +26,7 @@ class FirestoreService {
         );
     return (await _userRef.doc(did).get()).data();
   }
+
+  // Order Services
+
 }

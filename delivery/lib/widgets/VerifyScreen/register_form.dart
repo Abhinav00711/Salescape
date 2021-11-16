@@ -21,7 +21,7 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   String _name = '';
   String _phone = '';
-  String _state = '';
+  String _state = 'Andhra Pradesh';
   String _email = '';
 
   List<String> _states = [
