@@ -14,7 +14,7 @@ class Order {
   final String rid;
   final String oid;
   final String wid;
-  final String? did;
+  final String did;
   final String bname;
   final List<CartItem> items;
   final OrderStatus status;
@@ -25,7 +25,7 @@ class Order {
     required this.rid,
     required this.oid,
     required this.wid,
-    this.did,
+    this.did = '',
     required this.bname,
     required this.items,
     required this.total,
@@ -38,7 +38,7 @@ class Order {
       rid: json['rid'] as String,
       oid: json['oid'] as String,
       wid: json['wid'] as String,
-      did: json['did'] == null ? null : json['did'] as String,
+      did: json['did'] as String,
       bname: json['bname'] as String,
       items: (jsonDecode(json['items'] as String) as List)
           .map((i) => CartItem.fromJson(i))

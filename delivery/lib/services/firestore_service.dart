@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/delivery.dart';
+import '../models/order.dart';
 
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
@@ -29,4 +30,41 @@ class FirestoreService {
 
   // Order Services
 
+  Future<List<Order>> getAllUserOrders(String did) async {
+    var _orderRef = _firestore.collection('orders').withConverter<Order>(
+          fromFirestore: (snapshots, _) => Order.fromJson(snapshots.data()!),
+          toFirestore: (order, _) => order.toJson(),
+        );
+    List<Order> orderList = [];
+    List<QueryDocumentSnapshot<Order>> orders = await _orderRef
+        .where('did', isEqualTo: did)
+        .get()
+        .then((orders) => orders.docs);
+    for (var order in orders) {
+      orderList.add(order.data());
+    }
+    return orderList;
+  }
+
+  Future<List<Order>> getAcceptedUserOrders(String did) async {
+    List<Order> orderList = await getAllUserOrders(did);
+    List<Order> acceptedList = [];
+    for (var order in orderList) {
+      if (order.status == OrderStatus.accepted) {
+        acceptedList.add(order);
+      }
+    }
+    return acceptedList;
+  }
+
+  Future<List<Order>> getCompletedUserOrders(String did) async {
+    List<Order> orderList = await getAllUserOrders(did);
+    List<Order> completedList = [];
+    for (var order in orderList) {
+      if (order.status == OrderStatus.completed) {
+        completedList.add(order);
+      }
+    }
+    return completedList;
+  }
 }
