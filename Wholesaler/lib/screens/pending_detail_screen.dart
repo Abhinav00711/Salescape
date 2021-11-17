@@ -167,6 +167,7 @@ class PendingDetailScreen extends StatelessWidget {
                             total: order.total,
                             dateTime: order.dateTime,
                             status: OrderStatus.accepted,
+                            otp: order.otp,
                           );
                           await FirestoreService().updateOrder(updatedOrder);
                           Navigator.of(context).pushReplacement(

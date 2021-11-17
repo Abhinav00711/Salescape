@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:retailer/providers/auth_provider.dart';
-import 'package:retailer/services/firestore_service.dart';
-import 'package:retailer/utils/curve_painter.dart';
-import 'package:retailer/widgets/LoginScreen/decoration_functions.dart';
-import 'package:retailer/widgets/ProfileScreen/profile_button.dart';
-import 'package:retailer/widgets/ProfileScreen/profile_form.dart';
 
+import '../providers/auth_provider.dart';
+import '../services/firestore_service.dart';
+import '../utils/curve_painter.dart';
+import '../widgets/LoginScreen/decoration_functions.dart';
+import '../widgets/ProfileScreen/profile_button.dart';
+import '../widgets/ProfileScreen/profile_form.dart';
 import '../data/global.dart';
 import '../models/retailer.dart';
 

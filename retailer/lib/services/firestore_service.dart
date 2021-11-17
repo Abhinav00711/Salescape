@@ -27,7 +27,7 @@ class FirestoreService {
   }
 
   Future<void> updateUser(Retailer userData) async {
-    var _userRef = _firestore.collection('wholesalers').withConverter<Retailer>(
+    var _userRef = _firestore.collection('retailers').withConverter<Retailer>(
           fromFirestore: (snapshots, _) => Retailer.fromJson(snapshots.data()!),
           toFirestore: (user, _) => user.toJson(),
         );
@@ -95,7 +95,8 @@ class FirestoreService {
     List<Order> orderList = await getAllUserOrders(rid);
     List<Order> acceptedList = [];
     for (var order in orderList) {
-      if (order.status == OrderStatus.accepted) {
+      if (order.status == OrderStatus.accepted ||
+          order.status == OrderStatus.start) {
         acceptedList.add(order);
       }
     }

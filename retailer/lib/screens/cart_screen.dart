@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -60,6 +62,15 @@ class _CartScreenState extends State<CartScreen> {
         );
       },
     );
+  }
+
+  String generateOTP() {
+    var rnd = Random(DateTime.now().millisecondsSinceEpoch);
+    String otp = '';
+    for (var i = 0; i < 4; i++) {
+      otp = otp + rnd.nextInt(10).toString();
+    }
+    return otp;
   }
 
   @override
@@ -174,6 +185,7 @@ class _CartScreenState extends State<CartScreen> {
                                         total: _total,
                                         dateTime: DateTime.now(),
                                         status: OrderStatus.pending,
+                                        otp: generateOTP(),
                                       );
                                       showDialog(
                                         context: context,

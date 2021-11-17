@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/order.dart';
+import '../../screens/order_detail_screen.dart';
 
 class OrderTile extends StatelessWidget {
   const OrderTile({required this.order, Key? key}) : super(key: key);
@@ -12,7 +13,12 @@ class OrderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => OrderDetailScreen(order: order)),
+        );
+      },
       child: Card(
         color: Theme.of(context).accentColor,
         margin: EdgeInsets.all(15.0),

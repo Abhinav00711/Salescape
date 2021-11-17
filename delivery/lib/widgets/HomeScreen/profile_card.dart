@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../data/global.dart';
+import 'package:provider/provider.dart';
 
-class ProfileCard extends StatelessWidget {
+import '../../data/global.dart';
+import '../../providers/auth_provider.dart';
+import '../../screens/edit_profile_screen.dart';
+
+class ProfileCard extends StatefulWidget {
   const ProfileCard({Key? key}) : super(key: key);
 
+  @override
+  _ProfileCardState createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,7 +31,16 @@ class ProfileCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(
+                        MaterialPageRoute(
+                            builder: (context) => EditProfileScreen()),
+                      )
+                          .then((_) {
+                        setState(() {});
+                      });
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
@@ -55,7 +73,11 @@ class ProfileCard extends StatelessWidget {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Global.userData = null;
+                      await Provider.of<AuthProvider>(context, listen: false)
+                          .logout();
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(

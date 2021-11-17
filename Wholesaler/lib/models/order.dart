@@ -8,6 +8,7 @@ enum OrderStatus {
   pending,
   accepted,
   completed,
+  start,
 }
 
 class Order {
@@ -20,6 +21,7 @@ class Order {
   final OrderStatus status;
   final double total;
   final DateTime dateTime;
+  final String otp;
 
   Order({
     required this.rid,
@@ -31,6 +33,7 @@ class Order {
     required this.total,
     required this.dateTime,
     required this.status,
+    required this.otp,
   });
 
   factory Order.fromJson(Map<String, Object?> json) {
@@ -46,6 +49,7 @@ class Order {
       total: json['total'] as double,
       status: OrderStatus.values.elementAt(json['status'] as int),
       dateTime: (json['date'] as Timestamp).toDate(),
+      otp: (json['otp'] as String),
     );
   }
 
@@ -60,6 +64,7 @@ class Order {
       'total': total,
       'date': dateTime,
       'status': status.index,
+      'otp': otp,
     };
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/HomeScreen/profilecard.dart';
+import '../widgets/HomeScreen/profile_card.dart';
 import '../widgets/OrderScreen/order_tile.dart';
 import '../models/order.dart';
 import '../services/firestore_service.dart';

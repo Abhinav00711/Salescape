@@ -119,7 +119,8 @@ class FirestoreService {
     List<Order> orderList = await getAllUserOrders(wid);
     List<Order> acceptedList = [];
     for (var order in orderList) {
-      if (order.status == OrderStatus.accepted) {
+      if (order.status == OrderStatus.accepted ||
+          order.status == OrderStatus.start) {
         acceptedList.add(order);
       }
     }
