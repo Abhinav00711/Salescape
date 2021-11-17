@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../models/order.dart';
 import '../widgets/OrderDetailScreen/pickup_card.dart';
 import '../widgets/OrderDetailScreen/drop_card.dart';
+import '../services/firestore_service.dart';
 
 class OrderDetailScreen extends StatelessWidget {
   const OrderDetailScreen({required this.order, Key? key}) : super(key: key);
@@ -172,7 +173,22 @@ class OrderDetailScreen extends StatelessWidget {
                                 color: Colors.black,
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              Order updatedOrder = Order(
+                                rid: order.rid,
+                                oid: order.oid,
+                                wid: order.wid,
+                                bname: order.bname,
+                                items: order.items,
+                                total: order.total,
+                                dateTime: order.dateTime,
+                                status: OrderStatus.start,
+                                otp: order.otp,
+                              );
+                              await FirestoreService()
+                                  .updateOrder(updatedOrder);
+                              Navigator.of(context).pop();
+                            },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.amber,
                               padding: EdgeInsets.symmetric(
@@ -195,7 +211,22 @@ class OrderDetailScreen extends StatelessWidget {
                                 color: Colors.black,
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              Order updatedOrder = Order(
+                                rid: order.rid,
+                                oid: order.oid,
+                                wid: order.wid,
+                                bname: order.bname,
+                                items: order.items,
+                                total: order.total,
+                                dateTime: order.dateTime,
+                                status: OrderStatus.completed,
+                                otp: order.otp,
+                              );
+                              await FirestoreService()
+                                  .updateOrder(updatedOrder);
+                              Navigator.of(context).pop();
+                            },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.amber,
                               padding: EdgeInsets.symmetric(

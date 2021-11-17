@@ -98,4 +98,12 @@ class FirestoreService {
     }
     return completedList;
   }
+
+  Future<void> updateOrder(Order order) async {
+    var _orderRef = _firestore.collection('orders').withConverter<Order>(
+          fromFirestore: (snapshots, _) => Order.fromJson(snapshots.data()!),
+          toFirestore: (order, _) => order.toJson(),
+        );
+    await _orderRef.doc(order.oid).set(order);
+  }
 }
