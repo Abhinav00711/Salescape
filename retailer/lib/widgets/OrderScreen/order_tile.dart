@@ -25,6 +25,7 @@ class OrderTile extends StatelessWidget {
               break;
             }
           case OrderStatus.accepted:
+          case OrderStatus.start:
           case OrderStatus.completed:
             {
               Navigator.of(context).push(
