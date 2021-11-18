@@ -36,6 +36,7 @@ class ActiveDetailScreen extends StatelessWidget {
         children: [
           DeliveryAgentCard(
             isCompleted: order.status == OrderStatus.completed,
+            did: order.did,
           ),
           Expanded(
             child: NotificationListener<OverscrollIndicatorNotification>(

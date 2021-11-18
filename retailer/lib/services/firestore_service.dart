@@ -4,6 +4,7 @@ import '../models/order.dart';
 import '../models/product.dart';
 import '../models/retailer.dart';
 import '../models/wholesaler.dart';
+import '../models/delivery.dart';
 
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
@@ -52,6 +53,16 @@ class FirestoreService {
               toFirestore: (user, _) => user.toJson(),
             );
     return (await _userRef.doc(wid).get()).data()!.bname;
+  }
+
+  Future<Delivery?> getDelivery(String did) async {
+    var _userRef = _firestore
+        .collection('deliveryboys')
+        .withConverter<Delivery>(
+          fromFirestore: (snapshots, _) => Delivery.fromJson(snapshots.data()!),
+          toFirestore: (user, _) => user.toJson(),
+        );
+    return (await _userRef.doc(did).get()).data();
   }
 
   // Order Services
