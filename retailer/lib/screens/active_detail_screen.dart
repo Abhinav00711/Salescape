@@ -36,6 +36,7 @@ class ActiveDetailScreen extends StatelessWidget {
         children: [
           DeliveryAgentCard(
             isCompleted: order.status == OrderStatus.completed,
+            isStarted: order.status == OrderStatus.start,
             did: order.did,
           ),
           Expanded(

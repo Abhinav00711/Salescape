@@ -11,10 +11,12 @@ class DeliveryAgentCard extends StatelessWidget {
   const DeliveryAgentCard({
     Key? key,
     required this.isCompleted,
+    required this.isStarted,
     required this.did,
   }) : super(key: key);
 
   final bool isCompleted;
+  final bool isStarted;
   final String did;
 
   @override
@@ -78,11 +80,13 @@ class DeliveryAgentCard extends StatelessWidget {
                                 ),
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              MapScreen(did: _delivery.did)),
-                                    );
+                                    if (isStarted) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MapScreen(did: _delivery.did)),
+                                      );
+                                    }
                                   },
                                   icon: Icon(FontAwesomeIcons.mapMarker),
                                   label: Text('LOCATION'),
