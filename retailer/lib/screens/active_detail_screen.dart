@@ -38,6 +38,7 @@ class ActiveDetailScreen extends StatelessWidget {
             isCompleted: order.status == OrderStatus.completed,
             isStarted: order.status == OrderStatus.start,
             did: order.did,
+            otp: order.otp,
           ),
           Expanded(
             child: NotificationListener<OverscrollIndicatorNotification>(

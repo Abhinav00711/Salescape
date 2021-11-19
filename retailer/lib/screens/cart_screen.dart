@@ -12,7 +12,6 @@ import '../providers/cart_provider.dart';
 import '../services/firestore_service.dart';
 import '../widgets/CartScreen/empty_cart_screen.dart';
 import '../widgets/CartScreen/order_item.dart';
-import '../utils/dialog.dart';
 import '../utils/custom_dialog_box.dart';
 
 class CartScreen extends StatefulWidget {
@@ -23,47 +22,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  void _selectCategory(BuildContext ctx, IconData icon, String title,
-      String button, Color color, String description) {
-    showGeneralDialog(
-      barrierColor: Colors.black.withOpacity(0.5),
-      barrierDismissible: true,
-      context: ctx,
-      transitionBuilder: (context, a1, a2, widget) {
-        return Transform.scale(
-          scale: a1.value,
-          child: Opacity(
-            opacity: a1.value,
-            child: CommonDialog(
-              title: title,
-              button: button,
-              color: color,
-              description: description,
-              icon: icon,
-            ),
-          ),
-        );
-      },
-      transitionDuration: Duration(milliseconds: 200),
-      barrierLabel: '',
-      pageBuilder: (context, animation1, animation2) {
-        return Transform.scale(
-          scale: animation1.value,
-          child: Opacity(
-            opacity: animation1.value,
-            child: CommonDialog(
-              title: title,
-              button: button,
-              color: color,
-              description: description,
-              icon: icon,
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   String generateOTP() {
     var rnd = Random(DateTime.now().millisecondsSinceEpoch);
     String otp = '';
@@ -207,14 +165,7 @@ class _CartScreenState extends State<CartScreen> {
                                               setState(() {
                                                 _isConfirming = false;
                                               });
-                                              _selectCategory(
-                                                context,
-                                                Icons.check,
-                                                'Order Requested Successfully',
-                                                'Keep Shopping',
-                                                const Color(0xff22A45D),
-                                                'Your order request is successfully placed. We will contact you soon, till then stay put:)',
-                                              );
+                                              Navigator.of(context).pop();
                                             },
                                           );
                                         },

@@ -7,8 +7,8 @@ import './cart_item.dart';
 enum OrderStatus {
   pending,
   accepted,
-  completed,
   start,
+  completed,
 }
 
 class Order {

@@ -13,11 +13,13 @@ class DeliveryAgentCard extends StatelessWidget {
     required this.isCompleted,
     required this.isStarted,
     required this.did,
+    required this.otp,
   }) : super(key: key);
 
   final bool isCompleted;
   final bool isStarted;
   final String did;
+  final String otp;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,26 @@ class DeliveryAgentCard extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: _delivery.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: 'OTP : ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: otp,
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                               ),
