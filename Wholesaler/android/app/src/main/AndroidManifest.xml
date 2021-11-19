@@ -4,6 +4,8 @@
    <application
         android:label="wholesaler"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC6Khw1kUYGuCL8noGwYS2g0VU4p5sbu2Q"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

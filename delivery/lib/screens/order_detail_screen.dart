@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
 import '../models/order.dart';
+import '../models/delivery_location.dart';
+import '../data/global.dart';
 import '../widgets/OrderDetailScreen/pickup_card.dart';
 import '../widgets/OrderDetailScreen/drop_card.dart';
 import '../services/firestore_service.dart';
 
-class OrderDetailScreen extends StatelessWidget {
+class OrderDetailScreen extends StatefulWidget {
   const OrderDetailScreen({required this.order, Key? key}) : super(key: key);
 
   final Order order;
 
   @override
+  _OrderDetailScreenState createState() => _OrderDetailScreenState();
+}
+
+class _OrderDetailScreenState extends State<OrderDetailScreen> {
+  @override
   Widget build(BuildContext context) {
+    DeliveryLocation loc;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal[900],
@@ -54,7 +63,7 @@ class OrderDetailScreen extends StatelessWidget {
                             ),
                             children: [
                               TextSpan(
-                                text: order.oid,
+                                text: widget.order.oid,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -74,7 +83,7 @@ class OrderDetailScreen extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: '₹${order.total}',
+                              text: '₹${widget.order.total}',
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                               ),
@@ -94,7 +103,7 @@ class OrderDetailScreen extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: DateFormat("MMMM dd, yyyy")
-                                  .format(order.dateTime),
+                                  .format(widget.order.dateTime),
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                               ),
@@ -113,7 +122,7 @@ class OrderDetailScreen extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: order.status == OrderStatus.completed
+                              text: widget.order.status == OrderStatus.completed
                                   ? 'Completed'
                                   : 'Active',
                               style: TextStyle(
@@ -144,7 +153,7 @@ class OrderDetailScreen extends StatelessWidget {
                       Container(
                         width: double.infinity,
                         child: Text(
-                          'Items : ${order.items.length.toString()}',
+                          'Items : ${widget.order.items.length.toString()}',
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -153,18 +162,18 @@ class OrderDetailScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      PickupCard(wid: order.wid),
-                      DropCard(rid: order.rid),
+                      PickupCard(wid: widget.order.wid),
+                      DropCard(rid: widget.order.rid),
                     ],
                   ),
                 ),
               ),
             ),
-            order.status == OrderStatus.completed
+            widget.order.status == OrderStatus.completed
                 ? Container()
                 : Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                    child: order.status == OrderStatus.accepted
+                    child: widget.order.status == OrderStatus.accepted
                         ? ElevatedButton(
                             child: Text(
                               'START',
@@ -174,20 +183,68 @@ class OrderDetailScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () async {
+                              Location location = new Location();
+                              bool _serviceEnabled;
+                              PermissionStatus _permissionGranted;
+                              LocationData _locationData;
+
+                              _serviceEnabled = await location.serviceEnabled();
+                              if (!_serviceEnabled) {
+                                _serviceEnabled =
+                                    await location.requestService();
+                                if (!_serviceEnabled) {
+                                  return;
+                                }
+                              }
+
+                              _permissionGranted =
+                                  await location.hasPermission();
+                              if (_permissionGranted ==
+                                  PermissionStatus.denied) {
+                                _permissionGranted =
+                                    await location.requestPermission();
+                                if (_permissionGranted !=
+                                    PermissionStatus.granted) {
+                                  return;
+                                }
+                              }
+
+                              _locationData = await location.getLocation();
+                              loc = DeliveryLocation(
+                                did: Global.userData!.did,
+                                latitude: _locationData.latitude!,
+                                longitude: _locationData.longitude!,
+                              );
+                              await FirestoreService().updateLocation(loc);
+
+                              location.changeSettings(
+                                  interval: 10000, distanceFilter: 30);
+                              location.enableBackgroundMode(enable: true);
+                              location.onLocationChanged
+                                  .listen((locationData) async {
+                                loc = DeliveryLocation(
+                                  did: Global.userData!.did,
+                                  latitude: _locationData.latitude!,
+                                  longitude: _locationData.longitude!,
+                                );
+                                await FirestoreService().updateLocation(loc);
+                              });
+
                               Order updatedOrder = Order(
-                                rid: order.rid,
-                                oid: order.oid,
-                                wid: order.wid,
-                                bname: order.bname,
-                                items: order.items,
-                                total: order.total,
-                                dateTime: order.dateTime,
+                                rid: widget.order.rid,
+                                oid: widget.order.oid,
+                                wid: widget.order.wid,
+                                bname: widget.order.bname,
+                                items: widget.order.items,
+                                total: widget.order.total,
+                                dateTime: widget.order.dateTime,
                                 status: OrderStatus.start,
-                                otp: order.otp,
+                                did: widget.order.did,
+                                otp: widget.order.otp,
                               );
                               await FirestoreService()
                                   .updateOrder(updatedOrder);
-                              Navigator.of(context).pop();
+                              setState(() {});
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.amber,
@@ -213,15 +270,16 @@ class OrderDetailScreen extends StatelessWidget {
                             ),
                             onPressed: () async {
                               Order updatedOrder = Order(
-                                rid: order.rid,
-                                oid: order.oid,
-                                wid: order.wid,
-                                bname: order.bname,
-                                items: order.items,
-                                total: order.total,
-                                dateTime: order.dateTime,
+                                rid: widget.order.rid,
+                                oid: widget.order.oid,
+                                wid: widget.order.wid,
+                                did: widget.order.did,
+                                bname: widget.order.bname,
+                                items: widget.order.items,
+                                total: widget.order.total,
+                                dateTime: widget.order.dateTime,
                                 status: OrderStatus.completed,
-                                otp: order.otp,
+                                otp: widget.order.otp,
                               );
                               await FirestoreService()
                                   .updateOrder(updatedOrder);

@@ -4,6 +4,7 @@ import '../models/delivery.dart';
 import '../models/order.dart';
 import '../models/wholesaler.dart';
 import '../models/retailer.dart';
+import '../models/delivery_location.dart';
 
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
@@ -105,5 +106,16 @@ class FirestoreService {
           toFirestore: (order, _) => order.toJson(),
         );
     await _orderRef.doc(order.oid).set(order);
+  }
+
+  //Location Service
+  Future<void> updateLocation(DeliveryLocation location) async {
+    var _locationRef =
+        _firestore.collection('locations').withConverter<DeliveryLocation>(
+              fromFirestore: (snapshots, _) =>
+                  DeliveryLocation.fromJson(snapshots.data()!),
+              toFirestore: (user, _) => user.toJson(),
+            );
+    await _locationRef.doc(location.did).set(location);
   }
 }

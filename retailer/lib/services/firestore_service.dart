@@ -5,6 +5,7 @@ import '../models/product.dart';
 import '../models/retailer.dart';
 import '../models/wholesaler.dart';
 import '../models/delivery.dart';
+import '../models/delivery_location.dart';
 
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
@@ -63,6 +64,14 @@ class FirestoreService {
           toFirestore: (user, _) => user.toJson(),
         );
     return (await _userRef.doc(did).get()).data();
+  }
+
+  Stream<DeliveryLocation> getDeliveryLocation(String did) {
+    return _firestore
+        .collection('locations')
+        .doc(did)
+        .snapshots()
+        .map((snapshot) => DeliveryLocation.fromMap(snapshot.data()!));
   }
 
   // Order Services

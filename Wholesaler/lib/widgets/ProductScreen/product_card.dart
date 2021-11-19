@@ -34,6 +34,7 @@ class ProductCard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Container(
+                  height: 100,
                   width: double.infinity,
                   child: Image.network(
                     product.imageUrl,

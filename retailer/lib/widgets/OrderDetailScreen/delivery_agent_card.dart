@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/delivery.dart';
 import '../../services/firestore_service.dart';
+import '../../screens/map_screen.dart';
 
 class DeliveryAgentCard extends StatelessWidget {
   const DeliveryAgentCard({
@@ -76,7 +77,13 @@ class DeliveryAgentCard extends StatelessWidget {
                                   label: Text('CALL'),
                                 ),
                                 ElevatedButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MapScreen(did: _delivery.did)),
+                                    );
+                                  },
                                   icon: Icon(FontAwesomeIcons.mapMarker),
                                   label: Text('LOCATION'),
                                 ),
