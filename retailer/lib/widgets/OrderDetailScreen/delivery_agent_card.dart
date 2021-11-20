@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../models/delivery.dart';
 import '../../services/firestore_service.dart';
@@ -108,6 +109,12 @@ class DeliveryAgentCard extends StatelessWidget {
                                             builder: (context) =>
                                                 MapScreen(did: _delivery.did)),
                                       );
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "Delivery not started.",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          timeInSecForIosWeb: 1,
+                                          fontSize: 16.0);
                                     }
                                   },
                                   icon: Icon(FontAwesomeIcons.mapMarker),

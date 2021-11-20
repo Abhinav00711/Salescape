@@ -106,8 +106,7 @@ class ProductCard extends StatelessWidget {
                                 text: 'Yes',
                                 img: 'assets/images/removing.png',
                                 onPressed: () {
-                                  FirestoreService()
-                                      .deleteProduct(product, product.pid);
+                                  FirestoreService().deleteProduct(product.pid);
                                 },
                               );
                             },

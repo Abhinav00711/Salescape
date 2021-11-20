@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import '../models/delivery.dart';
 import './active_detail_screen.dart';
 import '../models/order.dart';
 import '../data/global.dart';
@@ -158,23 +160,49 @@ class PendingDetailScreen extends StatelessWidget {
                     children: [
                       ElevatedButton.icon(
                         onPressed: () async {
-                          Order updatedOrder = Order(
-                            rid: order.rid,
-                            oid: order.oid,
-                            wid: order.wid,
-                            bname: order.bname,
-                            items: order.items,
-                            total: order.total,
-                            dateTime: order.dateTime,
-                            status: OrderStatus.accepted,
-                            otp: order.otp,
-                          );
-                          await FirestoreService().updateOrder(updatedOrder);
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ActiveDetailScreen(order: order)),
-                          );
+                          var delList =
+                              await FirestoreService().getAllFreeDelivery();
+                          if (delList.isNotEmpty) {
+                            Delivery delivery = delList.firstWhere(
+                              (element) =>
+                                  element.state == Global.userData!.state,
+                              orElse: () => delList[0],
+                            );
+                            Order updatedOrder = Order(
+                              rid: order.rid,
+                              oid: order.oid,
+                              wid: order.wid,
+                              bname: order.bname,
+                              items: order.items,
+                              total: order.total,
+                              dateTime: order.dateTime,
+                              status: OrderStatus.accepted,
+                              otp: order.otp,
+                              did: delivery.did,
+                            );
+                            await FirestoreService().updateOrder(updatedOrder);
+                            Delivery updatedDelivery = Delivery(
+                              did: delivery.did,
+                              name: delivery.name,
+                              phone: delivery.phone,
+                              state: delivery.state,
+                              email: delivery.email,
+                              status: 1,
+                            );
+                            await FirestoreService()
+                                .updateDeliveryStatus(updatedDelivery);
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ActiveDetailScreen(order: order)),
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Delivery Agent not available.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                fontSize: 16.0);
+                          }
                         },
                         icon: Icon(FontAwesomeIcons.checkCircle),
                         label: Text(
@@ -188,8 +216,11 @@ class PendingDetailScreen extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(FontAwesomeIcons.cross),
+                        onPressed: () async {
+                          await FirestoreService().deleteOrder(order.oid);
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(FontAwesomeIcons.windowClose),
                         label: Text(
                           'Decline',
                           style: TextStyle(

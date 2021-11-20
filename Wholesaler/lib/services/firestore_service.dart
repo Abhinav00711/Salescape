@@ -43,6 +43,16 @@ class FirestoreService {
     await _userRef.doc(userData.wid).set(userData);
   }
 
+  Future<void> updateDeliveryStatus(Delivery userData) async {
+    var _userRef = _firestore
+        .collection('deliveryboys')
+        .withConverter<Delivery>(
+          fromFirestore: (snapshots, _) => Delivery.fromJson(snapshots.data()!),
+          toFirestore: (user, _) => user.toJson(),
+        );
+    await _userRef.doc(userData.did).set(userData);
+  }
+
   Future<Retailer> getRetailer(String rid) async {
     var _userRef = _firestore.collection('retailers').withConverter<Retailer>(
           fromFirestore: (snapshots, _) => Retailer.fromJson(snapshots.data()!),
@@ -59,6 +69,22 @@ class FirestoreService {
           toFirestore: (user, _) => user.toJson(),
         );
     return (await _userRef.doc(did).get()).data();
+  }
+
+  Future<List<Delivery>> getAllFreeDelivery() async {
+    var _userRef = _firestore
+        .collection('deliveryboys')
+        .withConverter<Delivery>(
+          fromFirestore: (snapshots, _) => Delivery.fromJson(snapshots.data()!),
+          toFirestore: (user, _) => user.toJson(),
+        );
+    List<Delivery> deliveryList = [];
+    List<QueryDocumentSnapshot<Delivery>> delivery =
+        await _userRef.where('status', isEqualTo: 0).get().then((d) => d.docs);
+    for (var del in delivery) {
+      deliveryList.add(del.data());
+    }
+    return deliveryList;
   }
 
   Stream<DeliveryLocation> getDeliveryLocation(String did) {
@@ -103,7 +129,7 @@ class FirestoreService {
     return productList;
   }
 
-  Future<void> deleteProduct(Product product, String pid) async {
+  Future<void> deleteProduct(String pid) async {
     var _productRef = _firestore.collection('products').withConverter<Product>(
           fromFirestore: (snapshots, _) => Product.fromJson(snapshots.data()!),
           toFirestore: (product, _) => product.toJson(),
@@ -111,8 +137,8 @@ class FirestoreService {
     return _productRef
         .doc(pid)
         .delete()
-        .then((value) => print("User Deleted"))
-        .catchError((error) => print("Failed to delete user: $error"));
+        .then((value) => print("Product Deleted"))
+        .catchError((error) => print("Failed to product user: $error"));
   }
 
   // Order Services
@@ -173,6 +199,18 @@ class FirestoreService {
           toFirestore: (order, _) => order.toJson(),
         );
     await _orderRef.doc(order.oid).set(order);
+  }
+
+  Future<void> deleteOrder(String oid) async {
+    var _orderRef = _firestore.collection('orders').withConverter<Order>(
+          fromFirestore: (snapshots, _) => Order.fromJson(snapshots.data()!),
+          toFirestore: (order, _) => order.toJson(),
+        );
+    return _orderRef
+        .doc(oid)
+        .delete()
+        .then((value) => print("Order Deleted"))
+        .catchError((error) => print("Failed to delete order: $error"));
   }
 
   //Report Service

@@ -5,10 +5,16 @@ import '../widgets/OrderScreen/order_tile.dart';
 import '../models/order.dart';
 import '../services/firestore_service.dart';
 import '../data/global.dart';
+import './order_detail_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     late List<Order> _orders;
@@ -48,7 +54,21 @@ class HomeScreen extends StatelessWidget {
                             child: ListView.builder(
                               itemCount: _orders.length,
                               itemBuilder: (context, index) {
-                                return OrderTile(order: _orders[index]);
+                                return InkWell(
+                                  child: OrderTile(order: _orders[index]),
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              OrderDetailScreen(
+                                                  order: _orders[index])),
+                                    )
+                                        .then((_) {
+                                      setState(() {});
+                                    });
+                                  },
+                                );
                               },
                             ),
                           ),

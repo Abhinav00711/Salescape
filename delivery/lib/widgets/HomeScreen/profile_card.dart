@@ -173,6 +173,27 @@ class _ProfileCardState extends State<ProfileCard> {
                       ),
                     ),
                     SizedBox(height: 5),
+                    RichText(
+                      text: TextSpan(
+                        text: 'Status : ',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: Global.userData!.status == 0
+                                ? 'Not Assigned'
+                                : 'Assigned',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5),
                   ],
                 ),
               ),
