@@ -10,6 +10,7 @@ import '../utils/curve_painter.dart';
 import '../widgets/LoginScreen/decoration_functions.dart';
 import '../widgets/ProfileScreen/profile_form.dart';
 import '../widgets/ProfileScreen/profile_button.dart';
+import './report_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -515,13 +516,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ],
                                 )
-                              : ProfileButton(
-                                  text: ' EDIT ',
-                                  onPressed: () {
-                                    setState(() {
-                                      _isEditable = true;
-                                    });
-                                  },
+                              : Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ProfileButton(
+                                      text: ' EDIT ',
+                                      onPressed: () {
+                                        setState(() {
+                                          _isEditable = true;
+                                        });
+                                      },
+                                    ),
+                                    ProfileButton(
+                                      text: 'REPORT',
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReportScreen()),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
                         ),
                       ],

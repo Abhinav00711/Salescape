@@ -6,6 +6,7 @@ import '../models/product.dart';
 import '../models/order.dart';
 import '../models/delivery.dart';
 import '../models/delivery_location.dart';
+import '../models/report.dart';
 
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
@@ -76,6 +77,14 @@ class FirestoreService {
           toFirestore: (product, _) => product.toJson(),
         );
     await _productRef.doc(product.pid).set(product);
+  }
+
+  Future<Product?> getProduct(String pid) async {
+    var _productRef = _firestore.collection('products').withConverter<Product>(
+          fromFirestore: (snapshots, _) => Product.fromJson(snapshots.data()!),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    return (await _productRef.doc(pid).get()).data();
   }
 
   Future<List<Product>> getAllProducts(String wid) async {
@@ -164,5 +173,44 @@ class FirestoreService {
           toFirestore: (order, _) => order.toJson(),
         );
     await _orderRef.doc(order.oid).set(order);
+  }
+
+  //Report Service
+  Future<Report> getReport(String wid) async {
+    int total;
+    List<String> pidList = [];
+    List<Order> pendingList = [];
+    List<Order> acceptedList = [];
+    List<Order> completedList = [];
+    List<ProductReport> prodrep = [];
+
+    var value = await getAllUserOrders(wid);
+    total = value.length;
+    for (var order in value) {
+      if (order.status == OrderStatus.pending) {
+        pendingList.add(order);
+      } else if (order.status == OrderStatus.accepted ||
+          order.status == OrderStatus.start) {
+        acceptedList.add(order);
+      } else {
+        completedList.add(order);
+      }
+      for (var item in order.items) {
+        if (!pidList.contains(item.pid)) {
+          pidList.add(item.pid);
+          var prod = await getProduct(item.pid);
+          prodrep.add(ProductReport(pid: item.pid, name: prod!.name, qty: 1));
+        } else {
+          var i = prodrep.lastIndexWhere((e) => e.pid == item.pid);
+          prodrep[i].qty = prodrep[i].qty + 1;
+        }
+      }
+    }
+    return Report(
+        torder: total.toString(),
+        pending: pendingList.length,
+        accepted: acceptedList.length,
+        completed: completedList.length,
+        prodrep: prodrep);
   }
 }

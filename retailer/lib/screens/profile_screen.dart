@@ -12,6 +12,7 @@ import '../widgets/ProfileScreen/profile_button.dart';
 import '../widgets/ProfileScreen/profile_form.dart';
 import '../data/global.dart';
 import '../models/retailer.dart';
+import './report_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -391,25 +392,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ],
                                 )
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                              : Column(
                                   children: [
-                                    ProfileButton(
-                                      text: ' EDIT ',
-                                      onPressed: () {
-                                        setState(() {
-                                          _isEditable = true;
-                                        });
-                                      },
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ProfileButton(
+                                          text: ' EDIT ',
+                                          onPressed: () {
+                                            setState(() {
+                                              _isEditable = true;
+                                            });
+                                          },
+                                        ),
+                                        ProfileButton(
+                                          text: ' LOGOUT ',
+                                          onPressed: () async {
+                                            Global.userData = null;
+                                            await Provider.of<AuthProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .logout();
+                                          },
+                                        ),
+                                      ],
                                     ),
+                                    SizedBox(height: 10),
                                     ProfileButton(
-                                      text: ' LOGOUT ',
-                                      onPressed: () async {
-                                        Global.userData = null;
-                                        await Provider.of<AuthProvider>(context,
-                                                listen: false)
-                                            .logout();
+                                      text: 'REPORT',
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReportScreen()),
+                                        );
                                       },
                                     ),
                                   ],

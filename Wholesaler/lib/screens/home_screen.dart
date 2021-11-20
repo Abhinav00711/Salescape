@@ -10,6 +10,7 @@ import '../providers/auth_provider.dart';
 import '../widgets/HomeScreen/home_button.dart';
 import '../widgets/HomeScreen/home_status_card.dart';
 import '../data/global.dart';
+import '../models/order.dart';
 import '../services/firestore_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,20 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void asyncMethod() async {
     await FirestoreService()
-        .getPendingUserOrders(Global.userData!.wid)
+        .getAllUserOrders(Global.userData!.wid)
         .then((value) {
-      _pending = value.length;
+      for (var order in value) {
+        if (order.status == OrderStatus.pending) {
+          _pending++;
+        } else if (order.status == OrderStatus.accepted ||
+            order.status == OrderStatus.start) {
+          _accepted++;
+        } else {
+          _completed++;
+        }
+      }
     });
-    await FirestoreService()
-        .getAcceptedUserOrders(Global.userData!.wid)
-        .then((value) {
-      _accepted = value.length;
-    });
-    await FirestoreService()
-        .getCompletedUserOrders(Global.userData!.wid)
-        .then((value) {
-      _completed = value.length;
-    });
+    setState(() {});
   }
 
   @override

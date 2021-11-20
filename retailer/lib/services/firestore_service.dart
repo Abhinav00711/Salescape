@@ -6,6 +6,7 @@ import '../models/retailer.dart';
 import '../models/wholesaler.dart';
 import '../models/delivery.dart';
 import '../models/delivery_location.dart';
+import '../models/report.dart';
 
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
@@ -194,5 +195,44 @@ class FirestoreService {
       }
     }
     return productList;
+  }
+
+  //Report Service
+  Future<Report> getReport(String rid) async {
+    int total;
+    List<String> pidList = [];
+    List<Order> pendingList = [];
+    List<Order> acceptedList = [];
+    List<Order> completedList = [];
+    List<ProductReport> prodrep = [];
+
+    var value = await getAllUserOrders(rid);
+    total = value.length;
+    for (var order in value) {
+      if (order.status == OrderStatus.pending) {
+        pendingList.add(order);
+      } else if (order.status == OrderStatus.accepted ||
+          order.status == OrderStatus.start) {
+        acceptedList.add(order);
+      } else {
+        completedList.add(order);
+      }
+      for (var item in order.items) {
+        if (!pidList.contains(item.pid)) {
+          pidList.add(item.pid);
+          var prod = await getProduct(item.pid);
+          prodrep.add(ProductReport(pid: item.pid, name: prod!.name, qty: 1));
+        } else {
+          var i = prodrep.lastIndexWhere((e) => e.pid == item.pid);
+          prodrep[i].qty = prodrep[i].qty + 1;
+        }
+      }
+    }
+    return Report(
+        torder: total.toString(),
+        pending: pendingList.length,
+        accepted: acceptedList.length,
+        completed: completedList.length,
+        prodrep: prodrep);
   }
 }
