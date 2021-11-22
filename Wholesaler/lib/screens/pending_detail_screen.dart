@@ -194,7 +194,7 @@ class PendingDetailScreen extends StatelessWidget {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ActiveDetailScreen(order: order)),
+                                      ActiveDetailScreen(order: updatedOrder)),
                             );
                           } else {
                             Fluttertoast.showToast(
