@@ -85,6 +85,7 @@ class OrderItem extends StatelessWidget {
                                     Provider.of<CartProvider>(context,
                                             listen: false)
                                         .remove(item);
+                                    Navigator.of(context).pop();
                                   },
                                 );
                               },
