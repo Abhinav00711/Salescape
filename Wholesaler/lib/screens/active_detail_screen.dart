@@ -71,9 +71,9 @@ class ActiveDetailScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                       Text(
-                        order.status == OrderStatus.accepted
-                            ? ' ACTIVE'
-                            : ' COMPLETED',
+                        order.status == OrderStatus.completed
+                            ? ' COMPLETED'
+                            : ' ACTIVE',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
